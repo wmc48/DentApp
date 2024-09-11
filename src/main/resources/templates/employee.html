@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Personel</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+
+    <h2 class="mb-4">Obecni pracownicy</h2>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Dodaj pracownika
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/employee/add}" method="post" th:object="${employeeDTO}">
+                        <div class="form-group">
+                            Imię: <input type="text" class="form-control" field="*{name}" name="name"><br>
+                            Nazwisko: <input type="text" class="form-control" field="*{surname}" name="surname"><br>
+                            Email: <input type="email" class="form-control" field="*{email}" name="email"><br>
+                            Nr Tel: <input type="text" class="form-control" field="*{phone}" name="phone"><br>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                                <input type="submit" class="btn btn-primary" value="Utwórz pracownika"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.employeeId}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.surname}"></td>
+
+        <td>
+            <!-- Przycisk szczegóły -->
+            <form th:action="@{/employee/show/{employeeId}(employeeId=${employee.employeeId})}"
+                  method="GET">
+                <button type="submit" class="btn btn-info">Szczegóły</button>
+            </form>
+        </td>
+        <td>
+            <!-- Przycisk usuń -->
+            <form th:action="@{/employee/delete/{employeeId}(employeeId=${employee.employeeId})}"
+                  th:method="DELETE">
+<!--                                        <input type="hidden" name="_method" value="delete"/>-->
+                <button type="submit" class="btn btn-warning">Usuń</button>
+            </form>
+        </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/" class="btn btn-primary mt-3">Strona główna</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
