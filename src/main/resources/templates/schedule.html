@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ustaw grafik pracy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Ustaw grafik pracy dla lekarza</h2>
+    <!-- Wybór lekarza -->
+    <form id="scheduleForm" th:action="@{/schedule/getSchedules}" method="get">
+        <div class="form-group">
+            <label for="employee">Wybierz lekarza:</label>
+            <select class="form-control" id="employee" name="employeeId" required>
+                <option value="" disabled selected>Wybierz lekarza</option>
+                <!-- Opcje lekarzy dynamicznie generowane przez Thymeleaf -->
+                <option th:each="employee : ${employees}"
+                        th:value="${employee.employeeId}"
+                        th:text="${employee.name} + ' ' + ${employee.surname}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Wybór daty -->
+        <div class="form-group">
+            <label for="workDate">Wybierz datę:</label>
+            <input type="date" class="form-control" id="workDate" name="workDate" required>
+        </div>
+
+        <!-- Wybór zmiany -->
+        <div class="form-group">
+            <label for="shift">Wybierz zmianę:</label>
+            <select class="form-control" id="shift" name="shiftId" required>
+                <option value="" disabled selected>Wybierz zmianę</option>
+                <!-- Opcje zmian dynamicznie generowane przez Thymeleaf -->
+                <option th:each="shift : ${shifts}"
+                        th:value="${shift.shiftId}"
+                        th:text="${shift.name} + ' (' + ${shift.startTime} + ' - ' + ${shift.endTime} + ')'">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Zapisz grafik</button>
+    </form>
+
+    <!-- Wyświetlenie aktualnego grafiku -->
+    <div class="mt-5">
+        <h3>Aktualny grafik </h3>
+        <p></p>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Imię i nazwisko</th>
+                <th>Data</th>
+                <th>Zmiana</th>
+                <th>Godziny pracy</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.employeeName}"></td>
+                <td th:text="${schedule.workDate}"></td>
+                <td th:text="${schedule.shiftName}"></td>
+                <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#employee').change(function() {
+            $('#scheduleForm').submit();
+        });
+    });
+</script>
+</body>
+</html>

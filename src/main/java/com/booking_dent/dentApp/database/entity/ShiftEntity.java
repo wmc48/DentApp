@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.Set;
 
 @Data
@@ -14,29 +15,25 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "employee")
-public class EmployeeEntity {
+@Table(name = "shifts")
+public class ShiftEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @Column(name = "shift_id")
+    private Long shiftId;
 
-    @Column(name = "name")
+    @Column(name = "shift_name")
     private String name;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "start_time")
+    private LocalTime startTime;
 
-    @Column(name = "email")
-    private String email;
+    @Column(name = "end_time")
+    private LocalTime endTime;
 
-    @Column(name = "phone")
-    private String phone;
-
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "shift")
     private Set<ScheduleEntity> schedules;
-
 
 
 }

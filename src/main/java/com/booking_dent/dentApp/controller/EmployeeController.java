@@ -2,9 +2,8 @@ package com.booking_dent.dentApp.controller;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.repository.EmployeeRepository;
-import com.booking_dent.dentApp.model.EmployeeDTO;
+import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
