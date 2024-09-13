@@ -34,7 +34,5 @@ public class ShiftEntity {
 
     @OneToMany(mappedBy = "shift")
     private Set<ScheduleEntity> schedules;
-
-
 }
 

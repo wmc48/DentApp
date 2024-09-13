@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @Entity
@@ -17,7 +16,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Table(name = "schedule")
 public class ScheduleEntity {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

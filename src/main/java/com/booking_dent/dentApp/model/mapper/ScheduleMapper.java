@@ -17,7 +17,7 @@ public interface ScheduleMapper {
     @Mapping(source = "shift.endTime", target = "endTime")
     ScheduleDTO toDTO(ScheduleEntity entity);
 
-    @Mapping(source = "employeeId", target = "employee.employeeId")  // Zmiana z 'employee.id' na 'employee.employeeId'
-    @Mapping(source = "shiftId", target = "shift.shiftId")  // Zmiana z 'shift.id' na 'shift.shiftId'
+    @Mapping(source = "employeeId", target = "employee.employeeId")
+    @Mapping(source = "shiftId", target = "shift.shiftId")
     ScheduleEntity toEntity(ScheduleDTO dto);
 }

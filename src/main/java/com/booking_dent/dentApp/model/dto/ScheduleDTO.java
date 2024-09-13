@@ -24,19 +24,5 @@ public class ScheduleDTO {
     private String shiftName;
     private LocalTime startTime;
     private LocalTime endTime;
-
-    // Metoda mapująca
-//    public static ScheduleDTO fromEntity(ScheduleEntity entity) {
-//        ScheduleDTO dto = new ScheduleDTO();
-//        dto.setScheduleId(Long.valueOf(entity.getScheduleId()));
-//        dto.setEmployeeId(Long.valueOf(entity.getEmployee().getEmployeeId()));
-//        dto.setShiftId(Long.valueOf(entity.getShift().getShiftId()));
-//        dto.setWorkDate(entity.getWorkDate());
-//        dto.setEmployeeName(entity.getEmployee().getName() + " " + entity.getEmployee().getSurname());
-//        dto.setShiftName(entity.getShift().getName());
-//        dto.setShiftStartTime(entity.getShift().getStartTime());
-//        dto.setShiftEndTime(entity.getShift().getEndTime());
-//        return dto;
-//    }
 }
 

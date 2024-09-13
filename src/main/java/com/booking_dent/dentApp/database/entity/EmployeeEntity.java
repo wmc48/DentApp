@@ -1,6 +1,5 @@
 package com.booking_dent.dentApp.database.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,8 +35,6 @@ public class EmployeeEntity {
 
     @OneToMany(mappedBy = "employee")
     private Set<ScheduleEntity> schedules;
-
-
 
 }
 

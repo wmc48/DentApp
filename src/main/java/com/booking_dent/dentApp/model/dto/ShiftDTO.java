@@ -19,6 +19,4 @@ public class ShiftDTO {
     private LocalTime startTime;
     private LocalTime endTime;
 
-
-
 }
