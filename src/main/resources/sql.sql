@@ -5,14 +5,16 @@ CREATE TABLE employee (
     email VARCHAR(50) NOT NULL,
     phone VARCHAR(50) NOT NULL
 );
-
+DROP TABLE IF EXISTS visit;
 CREATE TABLE visit (
     visit_id SERIAL PRIMARY KEY,
-    dr_id INT NOT NULL,
-    date_and_time DATETIME NOT NULL,
+    employee_id INT NOT NULL,
+    patient_id INT NOT NULL,
+    date_and_time TIMESTAMP NOT NULL,
     confirmed BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (dr_id) REFERENCES doctor(dr_id),
-    CONSTRAINT uniq_visit_dr UNIQUE (dr_id, date_and_time)
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+    FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
+    CONSTRAINT uniq_visit_dr UNIQUE (employee_id, date_and_time)
 );
 
 CREATE TABLE shifts (
@@ -21,6 +23,15 @@ CREATE TABLE shifts (
     start_time TIME,
     end_time TIME
 );
+
+CREATE TABLE patient (
+    patient_id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(50) NOT NULL,
+    pesel INT NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+)
 
 
 CREATE TABLE schedule (
