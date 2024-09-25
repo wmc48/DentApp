@@ -23,12 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeController {
 
-    private EmployeeRepository employeeRepository;
-    private ScheduleRepository scheduleRepository;
-    private ShiftRepository shiftRepository;
     private final EmployeeService employeeService;
-
-    private final ScheduleMapper scheduleMapper = ScheduleMapper.INSTANCE;
 
     @GetMapping
     public String showEmployeesList(Model model) {
@@ -63,7 +58,6 @@ public class EmployeeController {
         model.addAttribute("employee", employeeEntity);
         model.addAttribute("schedules", schedules);
         model.addAttribute("shifts", allShifts);
-
         return "employeeDetails";
     }
 
@@ -73,7 +67,6 @@ public class EmployeeController {
                                @RequestParam("shiftId") Integer shiftId) {
 
         employeeService.addSchedule(employeeId, workDateStr, shiftId);
-
         return "redirect:/employee/show/" + employeeId;
     }
 

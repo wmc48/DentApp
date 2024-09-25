@@ -8,13 +8,6 @@
 <body>
 <div class="container mt-4">
 
-    <div class="schedule">
-
-        <a href="/schedule" class="btn btn-primary btn-lg mt-3">Grafik dla pracowników</a>
-
-    </div>
-
-
     <h2 class="mb-4">Obecni pracownicy</h2>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -70,17 +63,16 @@
             <td th:text="${employee.surname}"></td>
 
         <td>
-            <!-- Przycisk szczegóły -->
+            <!-- przycisk szczegóły -->
             <form th:action="@{/employee/show/{employeeId}(employeeId=${employee.employeeId})}"
                   method="GET">
                 <button type="submit" class="btn btn-info">Szczegóły</button>
             </form>
         </td>
         <td>
-            <!-- Przycisk usuń -->
+            <!-- przycisk usuń -->
             <form th:action="@{/employee/delete/{employeeId}(employeeId=${employee.employeeId})}"
                   th:method="DELETE">
-<!--                                        <input type="hidden" name="_method" value="delete"/>-->
                 <button type="submit" class="btn btn-warning">Usuń</button>
             </form>
         </td>

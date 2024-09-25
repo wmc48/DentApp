@@ -33,8 +33,8 @@ public class visitEntity {
     private Long visitId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Integer employeeId;
+    @JoinColumn(name = "employee_id")
+    private EmployeeEntity employeeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)

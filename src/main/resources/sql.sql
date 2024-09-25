@@ -6,7 +6,7 @@ CREATE TABLE employee (
     phone VARCHAR(50) NOT NULL
 );
 DROP TABLE IF EXISTS visit;
-CREATE TABLE visit (
+CREATE TABLE reservation (
     visit_id SERIAL PRIMARY KEY,
     employee_id INT NOT NULL,
     patient_id INT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE patient (
     patient_id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
-    pesel INT NOT NULL,
+    pesel VARCHAR(11) NOT NULL,
     email VARCHAR(50) NOT NULL,
     phone VARCHAR(15) NOT NULL,
 )
