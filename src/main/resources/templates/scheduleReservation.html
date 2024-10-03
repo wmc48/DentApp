@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Szczegóły pracownika</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h2>Dostępne terminy dla lekarza <span th:text="${employee.name} + ' ' + ${employee.surname}"></span></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Zmiana</th>
+            <th>Godziny pracy</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.workDate}"></td>
+            <td th:text="${schedule.shiftName}"></td>
+            <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
+            <td>
+                <select class="form-control" name="selectedHour">
+                    <option th:each="hour : ${schedule.availableHours}"
+                            th:value="${hour}"
+                            th:text="${hour}">
+                    </option>
+                </select>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary">Umów</button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/reservation}" class="btn btn-secondary">Powrót</a> <!-- Opcjonalny przycisk powrotu -->
+</div>
+</body>
+</html>

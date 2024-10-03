@@ -9,7 +9,7 @@
 <body>
 
 <div class="container">
-    <h2>Szczegóły pracownika</h2>
+    <h2>Szczegóły pacjenta</h2>
     <table class="table table-striped table-hover">
         <tr>
             <th>Id</th>
@@ -27,8 +27,13 @@
             <td th:text="${patient.email}"></td>
             <td th:text="${patient.phone}"></td>
             <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPatientModal">
                     Edytuj
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reservationModal">
+                    Umów wizytę
                 </button>
             </td>
             <td>
@@ -37,46 +42,75 @@
                     <button type="submit" class="btn btn-warning">Usuń</button>
                 </form>
             </td>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Aktualizacja danych pacjenta</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form th:action="@{/patient/update/{patientId}(patientId=${patient.patientId})}"
-                                  th:object="${patient}" method="post">
-                                <input type="hidden" name="_method" value="put"/>
-                                <div class="form-group">
-                                    Imię: <input type="text" class="form-control" th:field="*{name}" name="name"><br>
-                                    Nazwisko: <input type="text" class="form-control" th:field="*{surname}"
-                                                     name="surname"><br>
-                                    Pesel: <input type="text" class="form-control" th:field="*{pesel}" name="pesel"><br>
-                                    Email: <input type="email" class="form-control" th:field="*{email}"
-                                                  name="email"><br>
-                                    Nr Tel: <input type="text" class="form-control" th:field="*{phone}"
-                                                   name="phone"><br>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Zaktualizuj</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </td>
         </tr>
     </table>
 
+    <!-- Modal do umawiania wizyty -->
+    <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Umów wizytę</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm" th:action="@{/reservation/schedule}" method="post">
+                        <div>
+                            <label for="employee">Wybierz lekarza:</label>
+                            <select id="employee" name="employeeId" class="form-control">
+                                <option th:each="employee : ${employees}"
+                                        th:value="${employee.employeeId}"
+                                        th:text="${employee.name + ' ' + employee.surname}"></option>
+                            </select>
+                        </div>
+
+                        <!-- Ukryte pole dla patientId -->
+                        <input type="hidden" name="patientId" th:value="${patientId}" />
+
+                        <button type="submit" class="btn btn-primary">Wyszukaj terminy</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal  do edytowania danych pacjenta-->
+    <div class="modal fade" id="editPatientModal" tabindex="-1" role="dialog" aria-labelledby="editPatientModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPatientModalLabel">Edytyj dane pacjenta pacjenta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/patient/update/{patientId}(patientId=${patient.patientId})}"
+                          th:object="${patient}" method="post">
+                        <input type="hidden" name="_method" value="put"/>
+                        <div class="form-group">
+                            Imię: <input type="text" class="form-control" th:field="*{name}" name="name"><br>
+                            Nazwisko: <input type="text" class="form-control" th:field="*{surname}"
+                                             name="surname"><br>
+                            Pesel: <input type="text" class="form-control" th:field="*{pesel}" name="pesel"><br>
+                            Email: <input type="email" class="form-control" th:field="*{email}"
+                                          name="email"><br>
+                            Nr Tel: <input type="text" class="form-control" th:field="*{phone}"
+                                           name="phone"><br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
+                            </button>
+                            <button type="submit" class="btn btn-primary">Zaktualizuj</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <a class="btn btn-primary" th:href="@{/patient}">Pokaż wszystkich pacjentów</a>
 </div>

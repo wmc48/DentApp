@@ -1,5 +1,6 @@
 package com.booking_dent.dentApp.controller;
 
+import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
@@ -17,6 +18,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final EmployeeService employeeService;
 
     @GetMapping
     public String showPatientList(Model model){
@@ -45,7 +47,9 @@ public class PatientController {
             Model model
     ){
         PatientEntity patient = patientService.findPatientById(patientId);
+        List<EmployeeEntity> employees = employeeService.getAllEmployees();
         model.addAttribute("patient", patient);
+        model.addAttribute("employees", employees);
         return "patientDetails";
     }
 
@@ -62,6 +66,4 @@ public class PatientController {
         patientService.deleteById(patientId);
         return "redirect:/patient";
     }
-
-
 }

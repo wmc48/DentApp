@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,14 +54,12 @@ public class EmployeeService {
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found, employeeId: " + employeeId));
     }
 
-    // pobranie grafiku pracownika
     public List<ScheduleDTO> getEmployeeSchedules(Integer employeeId) {
         return scheduleRepository.findByEmployeeEmployeeIdOrderByWorkDateAsc(Long.valueOf(employeeId)).stream()
                 .map(scheduleMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    // pobranie listy zmian
     public List<ShiftEntity> getAllShifts() {
         return shiftRepository.findAll();
     }
@@ -88,5 +88,16 @@ public class EmployeeService {
                 .build();
 
         return scheduleRepository.save(newSchedule);
+    }
+
+    public List<String> getAvailableHours(LocalTime startTime, LocalTime endTime) {
+        List<String> availableHours = new ArrayList<>();
+
+        while (startTime.isBefore(endTime)) {
+            availableHours.add(startTime.toString());
+            startTime = startTime.plusHours(1);
+        }
+
+        return availableHours;
     }
 }

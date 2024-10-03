@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "visit", uniqueConstraints = {
+@Table(name = "reservation", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"employee_id", "date_and_time"})
 })
-public class visitEntity {
+public class ReservationEntity {
 
 //    CREATE TABLE visit (
 //            visit_id SERIAL PRIMARY KEY,

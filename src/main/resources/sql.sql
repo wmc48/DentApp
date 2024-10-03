@@ -23,6 +23,12 @@ CREATE TABLE shifts (
     start_time TIME,
     end_time TIME
 );
+CREATE TABLE schedule (
+    schedule_id SERIAL PRIMARY KEY,
+    employee_id INT REFERENCES employee(employee_id),
+    shift_id INT REFERENCES shifts(shift_id),
+    work_date DATE
+);
 
 CREATE TABLE patient (
     patient_id SERIAL PRIMARY KEY,
@@ -34,12 +40,6 @@ CREATE TABLE patient (
 )
 
 
-CREATE TABLE schedule (
-    schedule_id SERIAL PRIMARY KEY,
-    employee_id INT REFERENCES employee(employee_id),
-    shift_id INT REFERENCES shifts(shift_id),
-    work_date DATE
-);
 INSERT INTO shifts (shift_name, start_time, end_time)
 VALUES
 ('morning', '07:00', '15:00'),

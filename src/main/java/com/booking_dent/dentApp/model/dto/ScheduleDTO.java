@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,5 +25,8 @@ public class ScheduleDTO {
     private String shiftName;
     private LocalTime startTime;
     private LocalTime endTime;
+    private List<String> availableHours;
+
+
 }
 
