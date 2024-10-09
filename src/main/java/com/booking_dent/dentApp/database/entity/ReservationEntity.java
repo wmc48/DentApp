@@ -19,30 +19,22 @@ import java.time.LocalDateTime;
 })
 public class ReservationEntity {
 
-//    CREATE TABLE visit (
-//            visit_id SERIAL PRIMARY KEY,
-//            dr_id INT NOT NULL,
-//            date_and_time DATETIME NOT NULL,
-//            confirmed BOOLEAN DEFAULT FALSE,
-//            FOREIGN KEY (dr_id) REFERENCES doctor(dr_id),
-//    CONSTRAINT uniq_visit_dr UNIQUE (dr_id, date_and_time)
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "visit_id")
-    private Long visitId;
+    private Long reservationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
-    private EmployeeEntity employeeId;
+    @ManyToOne
+    @JoinColumn(name = "employee_id", nullable = false)
+    private EmployeeEntity employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private PatientEntity patient;
 
     @Column(name = "date_and_time", nullable = false)
-    private LocalDateTime dateTime;
+    private LocalDateTime dateAndTime;
 
-    @Column(name = "confirmed")
-    private boolean confirmed;
+    @Column(name = "confirmed", nullable = false)
+    private boolean confirmed = false;
 }

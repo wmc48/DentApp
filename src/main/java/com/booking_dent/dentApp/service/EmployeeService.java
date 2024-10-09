@@ -45,16 +45,16 @@ public class EmployeeService {
         return employeeRepository.save(newEmployee);
     }
 
-    public void deleteById(Integer employeeId) {
+    public void deleteById(Long employeeId) {
         employeeRepository.deleteById(employeeId);
     }
 
-    public EmployeeEntity findEmployeeById(Integer employeeId) {
+    public EmployeeEntity findEmployeeById(Long employeeId) {
         return employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found, employeeId: " + employeeId));
     }
 
-    public List<ScheduleDTO> getEmployeeSchedules(Integer employeeId) {
+    public List<ScheduleDTO> getEmployeeSchedules(Long employeeId) {
         return scheduleRepository.findByEmployeeEmployeeIdOrderByWorkDateAsc(Long.valueOf(employeeId)).stream()
                 .map(scheduleMapper::toDTO)
                 .collect(Collectors.toList());
@@ -64,7 +64,7 @@ public class EmployeeService {
         return shiftRepository.findAll();
     }
 
-    public EmployeeEntity updateEmployee(EmployeeDTO employeeDTO, Integer employeeId) {
+    public EmployeeEntity updateEmployee(EmployeeDTO employeeDTO, Long employeeId) {
         EmployeeEntity employeeEntity = findEmployeeById(employeeId);
 
         employeeEntity.setName(employeeDTO.getName());
@@ -75,7 +75,7 @@ public class EmployeeService {
         return employeeRepository.save(employeeEntity);
     }
 
-    public ScheduleEntity addSchedule(Integer employeeId, String workDateStr, Integer shiftId){
+    public ScheduleEntity addSchedule(Long employeeId, String workDateStr, Integer shiftId) {
         LocalDate workDate = LocalDate.parse(workDateStr);
         EmployeeEntity employee = findEmployeeById(employeeId);
         ShiftEntity shift = shiftRepository.findById(shiftId)

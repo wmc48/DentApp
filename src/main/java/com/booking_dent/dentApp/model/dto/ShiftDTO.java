@@ -14,7 +14,7 @@ import java.time.LocalTime;
 public class ShiftDTO {
 
     private Long shiftId;
-    private Integer employeeId;
+    private Long employeeId;
     private String name;
     private LocalTime startTime;
     private LocalTime endTime;

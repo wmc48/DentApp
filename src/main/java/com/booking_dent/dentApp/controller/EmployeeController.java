@@ -1,21 +1,15 @@
 package com.booking_dent.dentApp.controller;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.ScheduleEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
-import com.booking_dent.dentApp.database.repository.EmployeeRepository;
-import com.booking_dent.dentApp.database.repository.ScheduleRepository;
-import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
-import com.booking_dent.dentApp.model.mapper.ScheduleMapper;
 import com.booking_dent.dentApp.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -40,14 +34,14 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/delete/{employeeId}")
-    public String deleteStaff(@PathVariable("employeeId") Integer employeeId) {
+    public String deleteStaff(@PathVariable("employeeId") Long employeeId) {
         employeeService.deleteById(employeeId);
         return "redirect:/employee";
     }
 
     @GetMapping("/show/{employeeId}")
     public String showEmployeeDetails(
-            @PathVariable Integer employeeId,
+            @PathVariable Long employeeId,
             Model model
     ) {
 
@@ -63,7 +57,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/scheduleadd")
-    public String saveSchedule(@RequestParam("employeeId") Integer employeeId,
+    public String saveSchedule(@RequestParam("employeeId") Long employeeId,
                                @RequestParam("workDate") String workDateStr,
                                @RequestParam("shiftId") Integer shiftId) {
 
@@ -73,7 +67,7 @@ public class EmployeeController {
 
     @PutMapping("/update/{employeeId}")
     public String updateEmployee(
-            @PathVariable Integer employeeId,
+            @PathVariable Long employeeId,
             @ModelAttribute("employee") EmployeeDTO employeeDTO
     ) {
         employeeService.updateEmployee(employeeDTO, employeeId);

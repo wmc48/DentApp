@@ -1,9 +1,7 @@
 package com.booking_dent.dentApp.service;
 
-import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
-import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;

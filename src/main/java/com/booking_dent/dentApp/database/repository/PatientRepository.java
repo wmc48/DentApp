@@ -1,7 +1,6 @@
 package com.booking_dent.dentApp.database.repository;
 
 import com.booking_dent.dentApp.database.entity.PatientEntity;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

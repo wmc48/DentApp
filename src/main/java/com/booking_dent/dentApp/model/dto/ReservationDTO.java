@@ -1,24 +1,31 @@
 package com.booking_dent.dentApp.model.dto;
 
-import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.PatientEntity;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationDTO{
+public class ReservationDTO {
 
-private Long visitId;
-private Long employeeId;
-private Long patientId;
-private String peselPatient;
-private LocalDateTime dateTime;
-private boolean confirmed;
+    private Long reservationId;
+    private LocalDateTime dateAndTime;
+    //    private LocalDateTime dateFrom;
+//    private LocalDateTime dateTo;
+    private String selectedHour;
+    private boolean confirmed;
+
+    private Long employeeId;
+    private String employeeName;
+    private String employeeSurname;
+
+    private Long patientId;
+    private String patientName;
+    private String patientSurname;
+    private String patientPesel;
 }
