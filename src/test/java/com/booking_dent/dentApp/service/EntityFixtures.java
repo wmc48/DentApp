@@ -1,9 +1,11 @@
 package com.booking_dent.dentApp.service;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
+import com.booking_dent.dentApp.database.entity.ScheduleEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import lombok.experimental.UtilityClass;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @UtilityClass
@@ -28,6 +30,8 @@ public class EntityFixtures {
                 .build();
     }
 
+    //shifts
+
     public static ShiftEntity testShift1(){
         return ShiftEntity.builder()
                 .shiftId(0L)
@@ -44,4 +48,17 @@ public class EntityFixtures {
                 .endTime(LocalTime.of(22,0, 0))
                 .build();
     }
+
+    //schedules
+
+    public static ScheduleEntity testSchedule1(){
+        return ScheduleEntity.builder()
+                .scheduleId(0L)
+                .employee(testEmployee1())
+                .shift(testShift1())
+                .workDate(LocalDate.of(2024,10,6))
+                .build();
+    }
+
+
 }

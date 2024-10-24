@@ -2,6 +2,7 @@ package com.booking_dent.dentApp.service;
 
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
+import com.booking_dent.dentApp.database.entity.ReservationEntity;
 import com.booking_dent.dentApp.database.entity.ScheduleEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.database.repository.EmployeeRepository;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ReservationService reservationService;
     private final ShiftRepository shiftRepository;
 
     private final ScheduleMapper scheduleMapper = ScheduleMapper.INSTANCE;
@@ -90,14 +94,35 @@ public class EmployeeService {
         return scheduleRepository.save(newSchedule);
     }
 
-    public List<String> getAvailableHours(LocalTime startTime, LocalTime endTime) {
-        List<String> availableHours = new ArrayList<>();
+    public List<ScheduleDTO> getAvailableSchedules(Long employeeId) {
+        List<ScheduleDTO> schedules = getEmployeeSchedules(employeeId);
+        List<ReservationEntity> reservations = reservationService.getAllReservations();
 
-        while (startTime.isBefore(endTime)) {
-            availableHours.add(startTime.toString());
-            startTime = startTime.plusHours(1);
+        for (ScheduleDTO schedule : schedules) {
+            Set<LocalTime> reservedHours = new HashSet<>();
+
+            // sprawdź rezerwacje dla danego pracownika w danym dniu
+            for (ReservationEntity reservation : reservations) {
+                if (reservation.getEmployee().getEmployeeId().equals(employeeId) &&
+                        reservation.getDateAndTime().toLocalDate().equals(schedule.getWorkDate())) {
+                    reservedHours.add(reservation.getDateAndTime().toLocalTime());
+                }
+            }
+
+            // ustalamy listę dostępnych godzin na podstawie godzin pracy w danym dniu
+            List<String> availableHours = new ArrayList<>();
+            LocalTime startTime = schedule.getStartTime();
+            LocalTime endTime = schedule.getEndTime();
+
+            while (startTime.isBefore(endTime)) {
+                // dodaj godzinę tylko jeśli nie jest zarezerwowana
+                if (!reservedHours.contains(startTime)) {
+                    availableHours.add(startTime.toString());
+                }
+                startTime = startTime.plusHours(1);
+            }
+            schedule.setAvailableHours(availableHours);
         }
-
-        return availableHours;
+        return schedules;
     }
 }

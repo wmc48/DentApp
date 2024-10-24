@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +31,6 @@ public class ReservationController {
         return "redirect:/reservation/showDoctor/" + employeeId + "/" + patientId;
     }
 
-
     @GetMapping("/showDoctor/{employeeId}/{patientId}")
     public String showDoctors(
             @PathVariable Long employeeId,
@@ -40,12 +38,8 @@ public class ReservationController {
             Model model
     ) {
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
-        List<ScheduleDTO> schedules = employeeService.getEmployeeSchedules(employeeId);
+        List<ScheduleDTO> schedules = employeeService.getAvailableSchedules(employeeId);
         List<ShiftEntity> allShifts = employeeService.getAllShifts();
-
-        for (ScheduleDTO schedule : schedules) { //ustala liste dostępnych godzin na podstawie godzin pracy w danym dniu
-            schedule.setAvailableHours(employeeService.getAvailableHours(schedule.getStartTime(), schedule.getEndTime()));
-        }
 
         // przekazanie danych do modelu
         model.addAttribute("employee", employeeEntity);
@@ -53,7 +47,6 @@ public class ReservationController {
         model.addAttribute("shifts", allShifts);
         model.addAttribute("patientId", patientId);
 
-        // zwracamy widok "scheduleReservation"
         return "scheduleReservation";
     }
 

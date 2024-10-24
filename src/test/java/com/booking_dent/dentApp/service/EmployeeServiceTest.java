@@ -1,8 +1,10 @@
 package com.booking_dent.dentApp.service;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
+import com.booking_dent.dentApp.database.entity.ScheduleEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.database.repository.EmployeeRepository;
+import com.booking_dent.dentApp.database.repository.ScheduleRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,12 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,10 +29,12 @@ class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
     @Mock
     private ShiftRepository shiftRepository;
+    @Mock
+    private ScheduleRepository scheduleRepository;
 
     @InjectMocks
     private EmployeeService employeeService;
-    
+
     @Test
     void getAllEmployees() {
         //given
@@ -139,6 +143,73 @@ class EmployeeServiceTest {
         assertEquals("afternoon", shifts.get(1).getName());
 
         verify(shiftRepository, times(1)).findAll();
+    }
+
+    @Test
+    void updateEmployee(){
+        //given
+        Long employeeId = 1L;
+
+        EmployeeEntity existingEmployee = EntityFixtures.testEmployee1();
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .name("edit")
+                .surname("TestoweNazw1")
+                .email("email@email.com")
+                .phone("8888888888")
+                .build();
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(existingEmployee));
+        when(employeeRepository.save(existingEmployee)).thenReturn(existingEmployee);
+
+        //when
+        EmployeeEntity updatedEmployee = employeeService.updateEmployee(employeeDTO, employeeId);
+
+        //then
+        assertEquals("edit", updatedEmployee.getName());
+        assertEquals("TestoweNazw1", updatedEmployee.getSurname());
+        assertEquals("email@email.com", updatedEmployee.getEmail());
+        assertEquals("8888888888", updatedEmployee.getPhone());
+
+        // Weryfikacja, że metody findById i save zostały wywołane
+        verify(employeeRepository).findById(employeeId);
+        verify(employeeRepository).save(existingEmployee);
+    }
+
+    @Test
+    public void addSchedule() {
+
+        // given
+        Long employeeId = 1L;
+        String workDateStr = "2024-10-07";
+        Integer shiftId = 1;
+        LocalDate expectedWorkDate = LocalDate.parse(workDateStr);
+
+        EmployeeEntity existingEmployee = EntityFixtures.testEmployee1();
+        ShiftEntity existingShift = EntityFixtures.testShift1();
+
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(existingEmployee));
+        when(shiftRepository.findById(shiftId)).thenReturn(Optional.of(existingShift));
+
+        ScheduleEntity newSchedule = ScheduleEntity.builder()
+                .employee(existingEmployee)
+                .workDate(expectedWorkDate)
+                .shift(existingShift)
+                .build();
+
+        when(scheduleRepository.save(any(ScheduleEntity.class))).thenReturn(newSchedule);
+
+        // when
+        ScheduleEntity newScheduleTest = employeeService.addSchedule(employeeId, workDateStr, shiftId);
+
+        // then
+        assertNotNull(newScheduleTest); //czy newScheduleTest nie jest nullem
+        assertEquals(existingEmployee, newScheduleTest.getEmployee());
+        assertEquals(expectedWorkDate, newScheduleTest.getWorkDate());
+        assertEquals(existingShift, newScheduleTest.getShift());
+
+        verify(employeeRepository).findById(employeeId);
+        verify(shiftRepository).findById(shiftId);
+        verify(scheduleRepository).save(any(ScheduleEntity.class));
     }
 }
 
