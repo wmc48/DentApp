@@ -62,6 +62,12 @@
 
     <h3>Grafik pracownika</h3>
 
+    <!--komunikatem o błędzie jeśli próbujemy dodać grafik na zajęty już dzień -->
+    <!--ScheduleService.generateScheduleConflictMessage -->
+    <div th:if="${errorMessage}" class="alert alert-warning mt-3">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#scheduleModal">
         Edytuj grafik
     </button>
@@ -79,8 +85,12 @@
                     <form th:action="@{/employee/scheduleadd}" method="post">
                         <input type="hidden" name="employeeId" th:value="${employee.employeeId}"/>
                         <div class="form-group">
-                            <label for="workDate">Wybierz datę:</label>
-                            <input type="date" class="form-control" id="workDate" name="workDate" required>
+                            <label for="workDateFrom">Wybierz datę od:</label>
+                            <input type="date" class="form-control" id="workDateFrom" name="workDateFrom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workDateTo">Wybierz datę do:</label>
+                            <input type="date" class="form-control" id="workDateTo" name="workDateTo" required>
                         </div>
                         <div class="form-group">
                             <label for="shift">Wybierz zmianę:</label>
@@ -97,10 +107,16 @@
                             <button type="submit" class="btn btn-primary">Dodaj grafik</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
+    </div>
+
+    <div>
+        <h2 th:text="'Grafik dla ' + ${employee.surname}"></h2>
+        <h2 th:text="'Widok dla miesiąca ' + ${currentMonthName}"></h2>
+        <a th:href="@{/employee/show/{id}(id=${employee.employeeId}, month=${previousMonth})}" class="btn btn-primary">Poprzedni miesiąc</a>
+        <a th:href="@{/employee/show/{id}(id=${employee.employeeId}, month=${nextMonth})}" class="btn btn-primary">Następny miesiąc</a>
     </div>
 
     <table class="table table-striped">
@@ -119,6 +135,7 @@
         </tr>
         </tbody>
     </table>
+
 
     <a class="btn btn-primary" th:href="@{/employee}">Pokaż wszystkich pracowników</a>
 </div>

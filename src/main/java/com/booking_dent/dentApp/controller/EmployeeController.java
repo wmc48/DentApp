@@ -3,13 +3,16 @@ package com.booking_dent.dentApp.controller;
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
+import com.booking_dent.dentApp.model.dto.MonthDetails;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
+import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -18,6 +21,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final ScheduleService scheduleService;
 
     @GetMapping
     public String showEmployeesList(Model model) {
@@ -42,28 +46,46 @@ public class EmployeeController {
     @GetMapping("/show/{employeeId}")
     public String showEmployeeDetails(
             @PathVariable Long employeeId,
+            @RequestParam(value = "month", required = false) String monthParam,
             Model model
     ) {
-
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
-        List<ScheduleDTO> schedules = employeeService.getEmployeeSchedules(employeeId);
+
+        //dla wyświetlania widoku danego miesiąca
+        MonthDetails monthDetails = employeeService.getMonthDetails(monthParam);
+
+        List<ScheduleDTO> schedules = scheduleService.getEmployeeSchedulesForMonth(employeeId, monthDetails.getCurrentMonth());
         List<ShiftEntity> allShifts = employeeService.getAllShifts();
 
         // przekazanie pracownika, grafiku i zmian do modelu
         model.addAttribute("employee", employeeEntity);
         model.addAttribute("schedules", schedules);
         model.addAttribute("shifts", allShifts);
+        model.addAttribute("previousMonth", monthDetails.getPreviousMonth().getYear() + "-" + String.format("%02d", monthDetails.getPreviousMonth().getMonthValue()));
+        model.addAttribute("nextMonth", monthDetails.getNextMonth().getYear() + "-" + String.format("%02d", monthDetails.getNextMonth().getMonthValue()));
+        model.addAttribute("currentMonthName", monthDetails.getCurrentMonthName());
+
         return "employeeDetails";
     }
 
+
     @PostMapping("/scheduleadd")
     public String saveSchedule(@RequestParam("employeeId") Long employeeId,
-                               @RequestParam("workDate") String workDateStr,
-                               @RequestParam("shiftId") Integer shiftId) {
+                               @RequestParam("workDateFrom") String workDateFromStr,
+                               @RequestParam("workDateTo") String workDateToStr,
+                               @RequestParam("shiftId") Integer shiftId,
+                               RedirectAttributes redirectAttributes) {
 
-        employeeService.addSchedule(employeeId, workDateStr, shiftId);
+        List<LocalDate> existingDates = scheduleService.addSchedule(employeeId, workDateFromStr, workDateToStr, shiftId);
+        String errorMessage = scheduleService.generateScheduleConflictMessage(existingDates);
+
+        if (errorMessage != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        }
+
         return "redirect:/employee/show/" + employeeId;
     }
+
 
     @PutMapping("/update/{employeeId}")
     public String updateEmployee(

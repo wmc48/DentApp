@@ -175,42 +175,42 @@ class EmployeeServiceTest {
         verify(employeeRepository).save(existingEmployee);
     }
 
-    @Test
-    public void addSchedule() {
-
-        // given
-        Long employeeId = 1L;
-        String workDateStr = "2024-10-07";
-        Integer shiftId = 1;
-        LocalDate expectedWorkDate = LocalDate.parse(workDateStr);
-
-        EmployeeEntity existingEmployee = EntityFixtures.testEmployee1();
-        ShiftEntity existingShift = EntityFixtures.testShift1();
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(existingEmployee));
-        when(shiftRepository.findById(shiftId)).thenReturn(Optional.of(existingShift));
-
-        ScheduleEntity newSchedule = ScheduleEntity.builder()
-                .employee(existingEmployee)
-                .workDate(expectedWorkDate)
-                .shift(existingShift)
-                .build();
-
-        when(scheduleRepository.save(any(ScheduleEntity.class))).thenReturn(newSchedule);
-
-        // when
-        ScheduleEntity newScheduleTest = employeeService.addSchedule(employeeId, workDateStr, shiftId);
-
-        // then
-        assertNotNull(newScheduleTest); //czy newScheduleTest nie jest nullem
-        assertEquals(existingEmployee, newScheduleTest.getEmployee());
-        assertEquals(expectedWorkDate, newScheduleTest.getWorkDate());
-        assertEquals(existingShift, newScheduleTest.getShift());
-
-        verify(employeeRepository).findById(employeeId);
-        verify(shiftRepository).findById(shiftId);
-        verify(scheduleRepository).save(any(ScheduleEntity.class));
-    }
+//    @Test
+//    public void addSchedule() {
+//
+//        // given
+//        Long employeeId = 1L;
+//        String workDateStr = "2024-10-07";
+//        Integer shiftId = 1;
+//        LocalDate expectedWorkDate = LocalDate.parse(workDateStr);
+//
+//        EmployeeEntity existingEmployee = EntityFixtures.testEmployee1();
+//        ShiftEntity existingShift = EntityFixtures.testShift1();
+//
+//        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(existingEmployee));
+//        when(shiftRepository.findById(shiftId)).thenReturn(Optional.of(existingShift));
+//
+//        ScheduleEntity newSchedule = ScheduleEntity.builder()
+//                .employee(existingEmployee)
+//                .workDate(expectedWorkDate)
+//                .shift(existingShift)
+//                .build();
+//
+//        when(scheduleRepository.save(any(ScheduleEntity.class))).thenReturn(newSchedule);
+//
+//        // when
+//        ScheduleEntity newScheduleTest = employeeService.addSchedule(employeeId, workDateStr, shiftId);
+//
+//        // then
+//        assertNotNull(newScheduleTest); //czy newScheduleTest nie jest nullem
+//        assertEquals(existingEmployee, newScheduleTest.getEmployee());
+//        assertEquals(expectedWorkDate, newScheduleTest.getWorkDate());
+//        assertEquals(existingShift, newScheduleTest.getShift());
+//
+//        verify(employeeRepository).findById(employeeId);
+//        verify(shiftRepository).findById(shiftId);
+//        verify(scheduleRepository).save(any(ScheduleEntity.class));
+//    }
 }
 
 

@@ -7,10 +7,12 @@ import com.booking_dent.dentApp.model.dto.ReservationDTO;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ReservationService;
+import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
     private  final EmployeeService employeeService;
+    private final ScheduleService scheduleService;
 
 
     @PostMapping("/schedule")
@@ -38,7 +41,7 @@ public class ReservationController {
             Model model
     ) {
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
-        List<ScheduleDTO> schedules = employeeService.getAvailableSchedules(employeeId);
+        List<ScheduleDTO> schedules = scheduleService.getAvailableSchedules(employeeId);
         List<ShiftEntity> allShifts = employeeService.getAllShifts();
 
         // przekazanie danych do modelu

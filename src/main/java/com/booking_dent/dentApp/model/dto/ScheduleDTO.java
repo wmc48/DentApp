@@ -19,6 +19,8 @@ public class ScheduleDTO {
     private Long employeeId;
     private Long shiftId;
     private LocalDate workDate;
+    private LocalDate workDateFrom;
+    private LocalDate workDateTo;
 
     private String employeeName;
     private String employeeSurname;
