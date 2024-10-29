@@ -15,5 +15,5 @@ public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Long> 
     //aby nie dodawać więcej zmian niż 1 na jeden dzień
     boolean existsByEmployeeAndWorkDate(EmployeeEntity employee, LocalDate workDate);
 
-    List<ScheduleEntity> findByEmployeeEmployeeIdAndWorkDateBetween(Long employeeId, LocalDate startDate, LocalDate endDate);
+    List<ScheduleEntity> findByEmployeeEmployeeIdAndWorkDateBetweenOrderByWorkDateAsc(Long employeeId, LocalDate startDate, LocalDate endDate);
 }

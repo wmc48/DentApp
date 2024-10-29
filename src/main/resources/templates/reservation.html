@@ -55,6 +55,13 @@
         </tr>
         </tbody>
     </table>
+    <div class="pagination">
+        <a th:href="@{/reservations(page=${currentPage - 1})}"
+           th:if="${currentPage > 0}">Poprzednia</a>
+        <span>Strona <span th:text="${currentPage + 1}"></span> z <span th:text="${totalPages}"></span></span>
+        <a th:href="@{/reservations(page=${currentPage + 1})}"
+           th:if="${currentPage + 1 < totalPages}">Następna</a>
+    </div>
     <a href="/" class="btn btn-primary mt-3">Strona główna</a>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

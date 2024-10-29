@@ -10,48 +10,53 @@
 <div class="container">
     <h2>Dostępne terminy dla lekarza <span th:text="${employee.name} + ' ' + ${employee.surname}"></span></h2>
     <h2>pacjent id <span th:text="${patientId}"></span></h2>
-    <form th:action="@{/reservation/add}" method="post">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Data</th>
-                <th>Zmiana</th>
-                <th>Godziny pracy</th>
-                <th>Wybierz godzinę</th>
-                <th>Akcja</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="schedule : ${schedules}">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Zmiana</th>
+            <th>Godziny pracy</th>
+            <th>Wybierz godzinę</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.workDate}"></td>
+            <td th:text="${schedule.shiftName}"></td>
+            <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
+            <td>
+                <select class="form-control" name="selectedHour">
+                    <option th:each="hour : ${schedule.availableHours}"
+                            th:value="${hour}"
+                            th:text="${hour}">
+                    </option>
+                </select>
+            </td>
+            <td>
+                <!-- Ukryte pola formularza -->
                 <form th:action="@{/reservation/add}" method="post">
-                    <td th:text="${schedule.workDate}"></td>
-                    <td th:text="${schedule.shiftName}"></td>
-                    <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
-                    <td>
-                        <select class="form-control" name="selectedHour">
-                            <option th:each="hour : ${schedule.availableHours}"
-                                    th:value="${hour}"
-                                    th:text="${hour}">
-                            </option>
-                        </select>
-                    </td>
-                    <td>
-                        <!-- Ukryte pola formularza -->
-                        <input type="hidden" name="employeeId" th:value="${employee.employeeId}" />
-                        <input type="hidden" name="patientId" th:value="${patientId}" />
-                        <input type="hidden" name="workDate" th:value="${schedule.workDate}" />
+                    <input type="hidden" name="employeeId" th:value="${employee.employeeId}" />
+                    <input type="hidden" name="patientId" th:value="${patientId}" />
+                    <input type="hidden" name="workDate" th:value="${schedule.workDate}" />
 
-                        <!-- Przycisk do przesłania formularza -->
-                        <button type="submit" class="btn btn-primary">Umów</button>
-                    </td>
+                    <button type="submit" class="btn btn-primary">Umów</button>
                 </form>
-            </tr>
-            </tbody>
-        </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-    </form>
+    <div class="pagination">
+        <a th:href="@{/reservation/showDoctor/{employeeId}/{patientId}(employeeId=${employee.employeeId}, patientId=${patientId}, page=${currentPage - 1})}"
+           th:if="${currentPage > 0}">Poprzednia</a>
+        <span>Strona <span th:text="${currentPage + 1}"></span> z <span th:text="${totalPages}"></span></span>
+        <a th:href="@{/reservation/showDoctor/{employeeId}/{patientId}(employeeId=${employee.employeeId}, patientId=${patientId}, page=${currentPage + 1})}"
+           th:if="${currentPage + 1 < totalPages}">Następna</a>
+    </div>
 
-    <a th:href="@{/reservation}" class="btn btn-secondary">Powrót</a> <!-- Opcjonalny przycisk powrotu -->
+    <a th:href="@{/reservation}" class="btn btn-secondary">Powrót</a>
 </div>
 </body>
 </html>

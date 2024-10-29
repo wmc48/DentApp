@@ -9,6 +9,7 @@ import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ReservationService;
 import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -38,20 +39,23 @@ public class ReservationController {
     public String showDoctors(
             @PathVariable Long employeeId,
             @PathVariable Long patientId,
+            @RequestParam(defaultValue = "0") int page,
             Model model
     ) {
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
-        List<ScheduleDTO> schedules = scheduleService.getAvailableSchedules(employeeId);
+        Page<ScheduleDTO> schedulesPage = scheduleService.getAvailableSchedules(employeeId, page);
         List<ShiftEntity> allShifts = employeeService.getAllShifts();
 
-        // przekazanie danych do modelu
         model.addAttribute("employee", employeeEntity);
-        model.addAttribute("schedules", schedules);
+        model.addAttribute("schedules", schedulesPage.getContent());
         model.addAttribute("shifts", allShifts);
         model.addAttribute("patientId", patientId);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", schedulesPage.getTotalPages());
 
         return "scheduleReservation";
     }
+
 
     @GetMapping
     public String showAllReservations(Model model) {
