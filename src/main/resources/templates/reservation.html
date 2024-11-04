@@ -8,32 +8,28 @@
 <body>
 <div class="container mt-4">
 
-    <h2 class="mb-4">Złożone rezerwacje</h2>
+    <p>Wyszukaj po: </p>
+    <div class="form-group">
+        <form action="#" th:action="@{/reservation/search}" th:method="get">
+            Imię pacjenta: <input type="text" name="patientName" th:value="${patientName}">
+            Naziwsko pacjenta: <input type="text" name="patientSurname" th:value="${patientSurname}">
+            Pesel pacjenta: <input type="text" name="patientPesel" th:value="${patientPesel}"><br>
+            Imie lekarza: <input type="text" name="employeeName" th:value="${employeeName}">
+            Nazwisko lekarza: <input type="text" name="employeeSurname" th:value="${employeeSurname}">
+            Id lekarza: <input type="text" name="employeeId" th:value="${employeeId}"><br>
+            Id wizyty: <input type="text" name="reservationId" th:value="${reservationId}"><br>
+            <input type="submit" class="btn btn-primary" value="Szukaj">
+        </form>
+    </div>
 
+    <h2 class="mb-4">Złożone rezerwacje</h2>
     <table class="table table-striped table-hover">
         <thead class="table-dark">
-        <p>Wyszukaj po: </p>
-        <div class="form-group">
-            <form action="#" th:action="@{/reservation/search}" th:method="get">
-                Imię pacjenta: <input type="text" name="patientName" th:value="${patientName}">
-                Naziwsko pacjenta: <input type="text" name="patientSurname" th:value="${patientSurname}">
-                Pesel pacjenta: <input type="text" name="patientPesel" th:value="${patientPesel}"><br>
-                Imie lekarza: <input type="text" name="employeeName" th:value="${employeeName}">
-                Nazwisko lekarza: <input type="text" name="employeeSurname" th:value="${employeeSurname}">
-                Id lekarza: <input type="text" name="employeeId" th:value="${employeeId}"><br>
-                <!--                Data od: <input type="text" name="dateFrom" th:value="${dateFrom}">-->
-                <!--                Data do: <input type="text" name="dateTo" th:value="${dateTo}"><br>-->
 
-                <!--                próba wyszuiwania o dacie powduje błąd, do naprawy-->
-                Id wizyty: <input type="text" name="reservationId" th:value="${reservationId}"><br>
-
-                <input type="submit" class="btn btn-primary" value="Szukaj">
-            </form>
-        </div>
         <tr>
             <th>ID</th>
-            <th>Pacjent</th>
             <th>Lekarz</th>
+            <th>Pacjent</th>
             <th>Data</th>
             <th></th>
         </tr>
@@ -41,8 +37,8 @@
         <tbody>
         <tr th:each="reservation : ${reservations}">
             <td th:text="${reservation.reservationId}"></td>
-            <td th:text="${reservation.patient.surname} + ' ' + ${reservation.patient.name}"></td>
             <td th:text="${reservation.employee.surname} + ' ' + ${reservation.employee.name}"></td>
+            <td th:text="${reservation.patient.surname} + ' ' + ${reservation.patient.name}"></td>
             <td th:text="${reservation.dateAndTime}"></td>
 
             <td>
@@ -56,10 +52,10 @@
         </tbody>
     </table>
     <div class="pagination">
-        <a th:href="@{/reservations(page=${currentPage - 1})}"
+        <a th:href="@{/reservation(page=${currentPage - 1})}"
            th:if="${currentPage > 0}">Poprzednia</a>
         <span>Strona <span th:text="${currentPage + 1}"></span> z <span th:text="${totalPages}"></span></span>
-        <a th:href="@{/reservations(page=${currentPage + 1})}"
+        <a th:href="@{/reservation(page=${currentPage + 1})}"
            th:if="${currentPage + 1 < totalPages}">Następna</a>
     </div>
     <a href="/" class="btn btn-primary mt-3">Strona główna</a>

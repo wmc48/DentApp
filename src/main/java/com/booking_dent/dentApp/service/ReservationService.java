@@ -8,6 +8,9 @@ import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.database.repository.ReservationRepository;
 import com.booking_dent.dentApp.model.dto.ReservationDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,33 +19,33 @@ import java.util.List;
 @AllArgsConstructor
 public class ReservationService {
 
-    private ReservationRepository reservationRepository; // Repozytorium do rezerwacji
-    private EmployeeRepository employeeRepository; // `Repozytorium do pracowników
-    private PatientRepository patientRepository; // Repozytorium do pacjentów
+    private ReservationRepository reservationRepository; // repozytorium do rezerwacji
+    private EmployeeRepository employeeRepository; // repozytorium do pracowników
+    private PatientRepository patientRepository; // repozytorium do pacjentów
 
     public List<ReservationEntity> getAllReservations() {
         return reservationRepository.findAll();
+    }
+
+    public Page<ReservationEntity> getReservations(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return reservationRepository.findAll(pageable);
     }
 
     public void deleteById(Long reservationId) {
         reservationRepository.deleteById(reservationId);
     }
 
-    public List<ReservationEntity> findReservation(ReservationDTO reservationDTO) {
+    public Page<ReservationEntity> findReservation(ReservationDTO reservationDTO, Pageable pageable) {
         return reservationRepository.findReservation(
                 reservationDTO.getPatientName(),
                 reservationDTO.getPatientSurname(),
                 reservationDTO.getPatientPesel(),
-
                 reservationDTO.getEmployeeName(),
                 reservationDTO.getEmployeeSurname(),
                 reservationDTO.getEmployeeId(),
-
-//                reservationDTO.getDateAndTime(),
-//                reservationDTO.getDateAndTime(),
-
-                reservationDTO.getReservationId()
-
+                reservationDTO.getReservationId(),
+                pageable // pageable do repozytorium
         );
     }
 

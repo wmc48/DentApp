@@ -1,6 +1,8 @@
 package com.booking_dent.dentApp.database.repository;
 
 import com.booking_dent.dentApp.database.entity.ReservationEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,14 +23,14 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
 //            "(:dateFrom IS NULL OR r.dateAndTime >= :dateFrom) AND " +
 //            "(:dateTo IS NULL OR r.dateAndTime <= :dateTo) AND " +
             "(:reservationId IS NULL OR r.reservationId = :reservationId)")
-    List<ReservationEntity> findReservation(
+    Page<ReservationEntity> findReservation(
             @Param("patientName") String patientName,
             @Param("patientSurname") String patientSurname,
             @Param("patientPesel") String patientPesel,
             @Param("employeeName") String employeeName,
             @Param("employeeSurname") String employeeSurname,
             @Param("employeeId") Long employeeId,
-//            @Param("dateFrom") LocalDateTime dateFrom,
-//            @Param("dateTo") LocalDateTime dateTo,
-            @Param("reservationId") Long reservationId);
+            @Param("reservationId") Long reservationId,
+            Pageable pageable // Accept pageable for pagination
+    );
 }

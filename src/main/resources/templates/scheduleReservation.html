@@ -27,21 +27,20 @@
             <td th:text="${schedule.shiftName}"></td>
             <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
             <td>
-                <select class="form-control" name="selectedHour">
-                    <option th:each="hour : ${schedule.availableHours}"
-                            th:value="${hour}"
-                            th:text="${hour}">
-                    </option>
-                </select>
-            </td>
-            <td>
-                <!-- Ukryte pola formularza -->
+                <!-- ukryte pola formularza -->
                 <form th:action="@{/reservation/add}" method="post">
                     <input type="hidden" name="employeeId" th:value="${employee.employeeId}" />
                     <input type="hidden" name="patientId" th:value="${patientId}" />
                     <input type="hidden" name="workDate" th:value="${schedule.workDate}" />
-
+                    <select class="form-control" name="selectedHour">
+                        <option th:each="hour : ${schedule.availableHours}"
+                                th:value="${hour}"
+                                th:text="${hour}">
+                        </option>
+                    </select>
+                    <td>
                     <button type="submit" class="btn btn-primary">Umów</button>
+                    </td>
                 </form>
             </td>
         </tr>

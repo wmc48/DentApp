@@ -10,6 +10,7 @@ import com.booking_dent.dentApp.service.ReservationService;
 import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,9 +59,14 @@ public class ReservationController {
 
 
     @GetMapping
-    public String showAllReservations(Model model) {
-        List<ReservationEntity> reservations = reservationService.getAllReservations();
-        model.addAttribute("reservations", reservations);
+    public String showAllReservations(
+            @RequestParam(defaultValue = "0") int page,
+            Model model
+    ) {
+        Page<ReservationEntity> reservationsPage = reservationService.getReservations(page, 10);
+        model.addAttribute("reservations", reservationsPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", reservationsPage.getTotalPages());
         return "reservation";
     }
 
@@ -93,10 +99,20 @@ public class ReservationController {
     }
 
     @GetMapping("/search")
-    public String searchReservations(@ModelAttribute ReservationDTO reservationDTO, Model model) {
+    public String searchReservations(
+            @ModelAttribute ReservationDTO reservationDTO,
+            @RequestParam(value = "page", defaultValue = "0") int page, // Default to the first page
+            @RequestParam(value = "size", defaultValue = "10") int size, // Number of records per page
+            Model model
+    ) {
 
-        List<ReservationEntity> reservations = reservationService.findReservation(reservationDTO);
-        model.addAttribute("reservations", reservations);
+        // pobranie wyników wyszikiwania i przypisanie do page
+        Page<ReservationEntity> reservationPage = reservationService.findReservation(reservationDTO, PageRequest.of(page, size));
+
+        // dodanie atrybutów do medelu widoku
+        model.addAttribute("reservations", reservationPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", reservationPage.getTotalPages());
         return "reservation";
     }
 
