@@ -70,7 +70,6 @@ class EmployeeServiceTest {
         //when
         EmployeeEntity savedEmployee = employeeService.addEmployee(employeeDTO);
 
-        //then
         assertEquals("Test1", savedEmployee.getName());
         assertEquals("TestoweNazw1", savedEmployee.getSurname());
         assertEquals("email@email.com", savedEmployee.getEmail());

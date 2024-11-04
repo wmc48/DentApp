@@ -35,7 +35,7 @@ public class PatientService {
                 .orElseThrow(() -> new EntityNotFoundException("patient not found, patientId: " + patientId));
     }
 
-    public PatientEntity updateEmployee(PatientDTO patientDTO, Long patientId) {
+    public PatientEntity updatePatient(PatientDTO patientDTO, Long patientId) {
         PatientEntity patientEntity = findPatientById(patientId);
 
         patientEntity.setName(patientDTO.getName());
@@ -49,5 +49,16 @@ public class PatientService {
 
     public void deleteById(Long patientId) {
         patientRepository.deleteById(patientId);
+    }
+
+    public PatientEntity addPatient(PatientDTO patientDTO) {
+        PatientEntity newPatient = PatientEntity.builder()
+                .name(patientDTO.getName())
+                .surname(patientDTO.getSurname())
+                .pesel(patientDTO.getPesel())
+                .email(patientDTO.getEmail())
+                .phone(patientDTO.getPhone())
+                .build();
+        return patientRepository.save(newPatient);
     }
 }

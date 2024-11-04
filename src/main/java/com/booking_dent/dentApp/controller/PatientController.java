@@ -57,7 +57,7 @@ public class PatientController {
     public String updatePatient(@PathVariable Long patientId,
                                 @ModelAttribute PatientDTO patientDTO
     ){
-        patientService.updateEmployee(patientDTO,patientId);
+        patientService.updatePatient(patientDTO,patientId);
         return "redirect:/patient/show/" + patientId;
     }
 
