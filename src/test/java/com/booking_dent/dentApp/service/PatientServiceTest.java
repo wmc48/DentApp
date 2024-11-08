@@ -14,6 +14,7 @@ import org.mockito.quality.Strictness;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,5 +147,108 @@ class PatientServiceTest {
         //then: czy wyjątek został rzucony
         assertEquals("patient not found, patientId: 1", exception.getMessage());
         verify(patientRepository, times(1)).findById(patientId);
+    }
+    @Test
+    void searchPatients_WithAllParameters() {
+        // given
+        PatientDTO searchCriteria = PatientDTO.builder()
+                .name("Jan")
+                .surname("Kowalski")
+                .pesel("12345678901")
+                .email("jan@example.com")
+                .phone("123456789")
+                .build();
+
+        List<PatientEntity> expectedResults = Collections.singletonList(
+                PatientFixtures.createTestPatient1()
+        );
+
+        when(patientRepository.searchPatients(
+                searchCriteria.getName(),
+                searchCriteria.getSurname(),
+                searchCriteria.getPesel(),
+                searchCriteria.getEmail(),
+                searchCriteria.getPhone()
+        )).thenReturn(expectedResults);
+
+        // when
+        List<PatientEntity> results = patientService.searchPatients(searchCriteria);
+
+        // then
+        assertEquals(1, results.size());
+        assertEquals("Jan", results.get(0).getName());
+        assertEquals("Kowalski", results.get(0).getSurname());
+
+        verify(patientRepository).searchPatients(
+                searchCriteria.getName(),
+                searchCriteria.getSurname(),
+                searchCriteria.getPesel(),
+                searchCriteria.getEmail(),
+                searchCriteria.getPhone()
+        );
+    }
+
+    @Test
+    void searchPatients_WithPartialParameters() {
+        // given
+        PatientDTO searchCriteria = PatientDTO.builder()
+                .surname("Kowalski")
+                .phone("123456789")
+                .build();
+
+        List<PatientEntity> expectedResults = Arrays.asList(
+                PatientFixtures.createTestPatient1(),
+                PatientFixtures.createTestPatient2()
+        );
+
+        when(patientRepository.searchPatients(
+                null,
+                searchCriteria.getSurname(),
+                null,
+                null,
+                searchCriteria.getPhone()
+        )).thenReturn(expectedResults);
+
+        // when
+        List<PatientEntity> results = patientService.searchPatients(searchCriteria);
+
+        // then
+        assertEquals(2, results.size());
+        verify(patientRepository).searchPatients(
+                null,
+                "Kowalski",
+                null,
+                null,
+                "123456789"
+        );
+    }
+
+    @Test
+    void searchPatients_NoResults() {
+        // given
+        PatientDTO searchCriteria = PatientDTO.builder()
+                .name("Nieistniejący")
+                .build();
+
+        when(patientRepository.searchPatients(
+                searchCriteria.getName(),
+                null,
+                null,
+                null,
+                null
+        )).thenReturn(Collections.emptyList());
+
+        // when
+        List<PatientEntity> results = patientService.searchPatients(searchCriteria);
+
+        // then
+        assertTrue(results.isEmpty());
+        verify(patientRepository).searchPatients(
+                "Nieistniejący",
+                null,
+                null,
+                null,
+                null
+        );
     }
 }
