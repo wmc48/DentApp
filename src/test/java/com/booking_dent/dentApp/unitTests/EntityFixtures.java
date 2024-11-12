@@ -1,4 +1,4 @@
-package com.booking_dent.dentApp.service;
+package com.booking_dent.dentApp.unitTests;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.ScheduleEntity;
@@ -31,7 +31,6 @@ public class EntityFixtures {
     }
 
     //shifts
-
     public static ShiftEntity testShift1(){
         return ShiftEntity.builder()
                 .shiftId(0L)
@@ -50,7 +49,6 @@ public class EntityFixtures {
     }
 
     //schedules
-
     public static ScheduleEntity testSchedule1(){
         return ScheduleEntity.builder()
                 .scheduleId(0L)
@@ -59,6 +57,4 @@ public class EntityFixtures {
                 .workDate(LocalDate.of(2024,10,6))
                 .build();
     }
-
-
 }

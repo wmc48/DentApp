@@ -1,12 +1,13 @@
-package com.booking_dent.dentApp.service;
+package com.booking_dent.dentApp.unitTests.service;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.ScheduleEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.ScheduleRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
+import com.booking_dent.dentApp.service.EmployeeService;
+import com.booking_dent.dentApp.unitTests.EntityFixtures;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -173,6 +173,8 @@ class EmployeeServiceTest {
         verify(employeeRepository).findById(employeeId);
         verify(employeeRepository).save(existingEmployee);
     }
+
+
 
 //    @Test
 //    public void addSchedule() {

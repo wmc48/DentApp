@@ -1,8 +1,9 @@
-package com.booking_dent.dentApp.service;
+package com.booking_dent.dentApp.unitTests.service;
 
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
+import com.booking_dent.dentApp.service.PatientService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

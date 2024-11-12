@@ -1,4 +1,4 @@
-package com.booking_dent.dentApp.service;
+package com.booking_dent.dentApp.unitTests.service;
 
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import lombok.experimental.UtilityClass;

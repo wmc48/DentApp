@@ -1,4 +1,4 @@
-package com.booking_dent.dentApp.service;
+package com.booking_dent.dentApp.unitTests.service;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.PatientEntity;
@@ -7,6 +7,7 @@ import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.database.repository.ReservationRepository;
 import com.booking_dent.dentApp.model.dto.ReservationDTO;
+import com.booking_dent.dentApp.service.ReservationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
