@@ -55,14 +55,14 @@ public class PatientController {
 
     @PutMapping("/update/{patientId}")
     public String updatePatient(@PathVariable Long patientId,
-                                @ModelAttribute PatientDTO patientDTO
+                                @ModelAttribute("patient") PatientDTO patientDTO
     ){
         patientService.updatePatient(patientDTO,patientId);
         return "redirect:/patient/show/" + patientId;
     }
 
     @DeleteMapping("/delete/{patientId}")
-    public String deleteStaff(@PathVariable("patientId") Long patientId) {
+    public String deletePatient(@PathVariable("patientId") Long patientId) {
         patientService.deleteById(patientId);
         return "redirect:/patient";
     }

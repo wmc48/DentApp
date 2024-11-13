@@ -7,7 +7,8 @@ import com.booking_dent.dentApp.database.repository.ScheduleRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
-import com.booking_dent.dentApp.unitTests.EntityFixtures;
+import com.booking_dent.dentApp.unitTests.utility.EntityFixtures;
+import com.booking_dent.dentApp.unitTests.utility.ShiftFixtures;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -130,7 +132,7 @@ class EmployeeServiceTest {
     @Test
     void getAllShifts(){
         //given
-        List<ShiftEntity> mockShifts = Arrays.asList(EntityFixtures.testShift1(), EntityFixtures.testShift2());
+        List<ShiftEntity> mockShifts = Arrays.asList(ShiftFixtures.testShift1(), ShiftFixtures.testShift2());
         when(shiftRepository.findAll()).thenReturn(mockShifts);
 
         //when

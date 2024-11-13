@@ -4,6 +4,7 @@ import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.service.PatientService;
+import com.booking_dent.dentApp.unitTests.utility.PatientFixtures;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -81,13 +81,7 @@ class PatientServiceTest {
         Long patientId = 1L;
         PatientEntity existingPatient = PatientFixtures.createTestPatient1();
 
-        PatientDTO patientDTO = PatientDTO.builder()
-                .name("Jan")
-                .surname("Edytowany")
-                .email("jan.kowalski@gmail.com")
-                .phone("123456789")
-                .pesel("12345678901")
-                .build();
+        PatientDTO patientDTO = PatientFixtures.testPatientDto();
 
         when(patientRepository.findById(patientId)).thenReturn(Optional.of(existingPatient));
         when(patientRepository.save(existingPatient)).thenReturn(existingPatient);
@@ -98,8 +92,8 @@ class PatientServiceTest {
         //them
         assertEquals(1L, updatePatient.getPatientId());
         assertEquals("Jan", updatePatient.getName());
-        assertEquals("Edytowany", updatePatient.getSurname());
-        assertEquals("12345678901", updatePatient.getPesel());
+        assertEquals("Dto", updatePatient.getSurname());
+        assertEquals("12378901", updatePatient.getPesel());
 
         verify(patientRepository).findById(patientId);
         verify(patientRepository).save(existingPatient);

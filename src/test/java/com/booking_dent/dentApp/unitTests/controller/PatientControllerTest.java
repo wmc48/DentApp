@@ -1,0 +1,75 @@
+package com.booking_dent.dentApp.unitTests.controller;
+
+
+import com.booking_dent.dentApp.controller.PatientController;
+import com.booking_dent.dentApp.database.entity.PatientEntity;
+import com.booking_dent.dentApp.model.dto.PatientDTO;
+import com.booking_dent.dentApp.service.EmployeeService;
+import com.booking_dent.dentApp.service.PatientService;
+import com.booking_dent.dentApp.unitTests.utility.PatientFixtures;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(PatientController.class)
+class PatientControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc; //symulowanie żądań HTTP do kontrolera w testach
+
+    @MockBean
+    private PatientService patientService;
+    @MockBean
+    private EmployeeService employeeService;
+
+    @Test
+    void showPatientList() throws Exception {
+        //given
+        List<PatientEntity> patients = Arrays.asList(PatientFixtures.createTestPatient1(), PatientFixtures.createTestPatient2());
+        when(patientService.getAllPatient()).thenReturn(patients);
+
+        //when & then
+        mockMvc.perform(get("/patient"))
+                .andExpect(status().isOk()) //czy zwracany status to 200 OK
+                .andExpect(view().name("patient")) //czy zwracany widok to "patient"
+                .andExpect(model().attributeExists("patients")) //czy atrybut patients jest obecny w modelu
+                .andExpect(model().attribute("patients", patients)); //czy atrybut patients w modelu zawiera oczekiwaną listę pacjentów
+    }
+
+    @Test
+    void deletePatient() throws Exception {
+        //given
+        Long patientId = 1L;
+
+        //when & then
+        mockMvc.perform(delete("/patient/delete/{patientId}", patientId))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/patient"));
+
+        verify(patientService, times(1)).deleteById(patientId);
+    }
+
+    @Test
+    void updatePatient() throws Exception {
+        // given
+        PatientDTO patientDTO = PatientFixtures.testPatientDto();
+        Long patientId = 1L;
+
+        // when & then
+        mockMvc.perform(put("/patient/update/" + patientId)
+                        .flashAttr("patient", patientDTO))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/patient/show/" + patientId));
+
+        verify(patientService).updatePatient(patientDTO, patientId);
+    }
+}
