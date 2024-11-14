@@ -7,7 +7,7 @@ import com.booking_dent.dentApp.database.repository.ScheduleRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
-import com.booking_dent.dentApp.unitTests.utility.EntityFixtures;
+import com.booking_dent.dentApp.unitTests.utility.EmployeeFixtures;
 import com.booking_dent.dentApp.unitTests.utility.ShiftFixtures;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class EmployeeServiceTest {
     @Test
     void getAllEmployees() {
         //given
-        List<EmployeeEntity> mockEmployees = Arrays.asList(EntityFixtures.testEmployee1(), EntityFixtures.testEmployee2());
+        List<EmployeeEntity> mockEmployees = Arrays.asList(EmployeeFixtures.testEmployee1(), EmployeeFixtures.testEmployee2());
         when(employeeRepository.findAll()).thenReturn(mockEmployees);
 
         //when
@@ -64,7 +64,7 @@ class EmployeeServiceTest {
                 .email("email@email.com")
                 .phone("8888888888")
                 .build();
-        EmployeeEntity expectedEmployee = EntityFixtures.testEmployee1();
+        EmployeeEntity expectedEmployee = EmployeeFixtures.testEmployee1();
 
         // mockowanie działania repozytorium - symulujemy zwracanie obiektu po zapisaniu
         when(employeeRepository.save(any(EmployeeEntity.class))).thenReturn(expectedEmployee);
@@ -98,7 +98,7 @@ class EmployeeServiceTest {
         //given
         Long employeeId = 1L;
 
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(EntityFixtures.testEmployee1()));
+        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(EmployeeFixtures.testEmployee1()));
 
         //when
         EmployeeEntity foundEmployee = employeeService.findEmployeeById(employeeId);
@@ -151,7 +151,7 @@ class EmployeeServiceTest {
         //given
         Long employeeId = 1L;
 
-        EmployeeEntity existingEmployee = EntityFixtures.testEmployee1();
+        EmployeeEntity existingEmployee = EmployeeFixtures.testEmployee1();
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
                 .name("edit")
                 .surname("TestoweNazw1")

@@ -5,7 +5,7 @@ import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
-public class EntityFixtures {
+public class EmployeeFixtures {
     public static EmployeeEntity testEmployee1(){
         return EmployeeEntity.builder()
                 .employeeId(1L)

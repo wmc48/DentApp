@@ -8,7 +8,7 @@ import com.booking_dent.dentApp.model.dto.MonthDetails;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ScheduleService;
-import com.booking_dent.dentApp.unitTests.utility.EntityFixtures;
+import com.booking_dent.dentApp.unitTests.utility.EmployeeFixtures;
 import com.booking_dent.dentApp.unitTests.utility.MonthFixtures;
 import com.booking_dent.dentApp.unitTests.utility.ShiftFixtures;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class EmployeeControllerTest {
     @Test
     void showEmployeesList() throws Exception {
         // given
-        List<EmployeeEntity> employees = Arrays.asList(EntityFixtures.testEmployee1(), EntityFixtures.testEmployee2());
+        List<EmployeeEntity> employees = Arrays.asList(EmployeeFixtures.testEmployee1(), EmployeeFixtures.testEmployee2());
         when(employeeService.getAllEmployees()).thenReturn(employees);
 
         // when & then
@@ -58,7 +58,7 @@ class EmployeeControllerTest {
     @Test
     void addEmployee() throws Exception {
         //given
-        EmployeeDTO employeeDTO = EntityFixtures.testEmployeeDto();
+        EmployeeDTO employeeDTO = EmployeeFixtures.testEmployeeDto();
 
         // when & then
         //tworzymy przykładowy obiekt EmployeeDTO i przekazujemy go do kontrolera za pomocą flashAttr()
@@ -73,7 +73,7 @@ class EmployeeControllerTest {
     @Test
     void updateEmployee() throws Exception {
         //given
-        EmployeeDTO employeeDTO = EntityFixtures.testEmployeeDto();
+        EmployeeDTO employeeDTO = EmployeeFixtures.testEmployeeDto();
         Long employeeId = 1L;
 
         //when & then
@@ -147,7 +147,7 @@ class EmployeeControllerTest {
     @Test
     public void showEmployeeDetails_ShouldHandleNullMonthParam() throws Exception {
         //given
-        EmployeeEntity employee = EntityFixtures.testEmployee1();
+        EmployeeEntity employee = EmployeeFixtures.testEmployee1();
         List<ShiftEntity> shifts = Arrays.asList(ShiftFixtures.testShift1(), ShiftFixtures.testShift2());
 
         MonthDetails monthDetails = MonthFixtures.testMonthDetails();
@@ -176,7 +176,7 @@ class EmployeeControllerTest {
     @Test
     public void showEmployeeDetails_ShouldHandleSpecificMonthParam() throws Exception {
         //given
-        EmployeeEntity employee = EntityFixtures.testEmployee1();
+        EmployeeEntity employee = EmployeeFixtures.testEmployee1();
         List<ShiftEntity> shifts = Arrays.asList(ShiftFixtures.testShift1(), ShiftFixtures.testShift2());
 
         MonthDetails monthDetails = MonthFixtures.testMonthDetails();

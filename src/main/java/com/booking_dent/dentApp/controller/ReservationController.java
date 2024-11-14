@@ -28,7 +28,7 @@ public class ReservationController {
     private final ScheduleService scheduleService;
 
 
-    @PostMapping("/schedule")
+    @PostMapping("/schedule") // niezbędne aby przekazać pathBarable do showDoctors
     public String processScheduleReservation(
             @RequestParam("employeeId") Long employeeId,
             @RequestParam("patientId") Long patientId
@@ -37,7 +37,7 @@ public class ReservationController {
     }
 
     @GetMapping("/showDoctor/{employeeId}/{patientId}")
-    public String showDoctors(
+    public String availableHoursForDoctor(
             @PathVariable Long employeeId,
             @PathVariable Long patientId,
             @RequestParam(defaultValue = "0") int page,
@@ -71,7 +71,7 @@ public class ReservationController {
     }
 
     @DeleteMapping("/delete/{reservationId}")
-    public String deleteStaff(@PathVariable("reservationId") Long reservationId) {
+    public String deleteReservation(@PathVariable("reservationId") Long reservationId) {
         reservationService.deleteById(reservationId);
         return "redirect:/reservation";
     }
@@ -88,14 +88,15 @@ public class ReservationController {
         LocalDateTime dateAndTime = LocalDateTime.parse(dateTimeString);
 
         // tworzenie DTO
-        ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setEmployeeId(employeeId);
-        reservationDTO.setPatientId(patientId);
-        reservationDTO.setDateAndTime(dateAndTime);
+
+        ReservationDTO reservationDTO = ReservationDTO.builder()
+                .employeeId(employeeId)
+                .patientId(patientId)
+                .dateAndTime(dateAndTime)
+                .build();
 
         reservationService.addReservation(reservationDTO);
         return "redirect:/reservation";
-        //działa, dodawane są rekordy do bazy
     }
 
     @GetMapping("/search")
@@ -115,6 +116,4 @@ public class ReservationController {
         model.addAttribute("totalPages", reservationPage.getTotalPages());
         return "reservation";
     }
-
-
 }

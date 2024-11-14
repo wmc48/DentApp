@@ -14,8 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,5 +73,46 @@ class PatientControllerTest {
                 .andExpect(redirectedUrl("/patient/show/" + patientId));
 
         verify(patientService).updatePatient(patientDTO, patientId);
+    }
+
+    @Test
+    void searchPatients() throws Exception {
+        //given
+        PatientDTO searchCriteria = PatientDTO.builder()
+                .name("Jan")
+                .build();
+
+        List<PatientEntity> existingPatients = Arrays.asList(PatientFixtures.createTestPatient1(), PatientFixtures.createTestPatient2());
+        when(patientService.searchPatients(searchCriteria)).thenReturn(existingPatients);
+
+        //whe&& then
+        mockMvc.perform(get("/patient/search")
+                        .flashAttr("patientDTO", searchCriteria))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patient"))
+                .andExpect(model().attribute("patients", existingPatients))
+                .andExpect(model().attribute("name", existingPatients.get(0).getName()));
+
+        verify(patientService).searchPatients(searchCriteria);
+    }
+
+    @Test
+    void searchPatients_noMatch_returnsEmptyList() throws Exception {
+        //given
+        PatientDTO searchCriteria = PatientDTO.builder()
+                .name("Jana")
+                .build();
+
+        List<PatientEntity> emptyPatientList = Collections.emptyList();
+        when(patientService.searchPatients(searchCriteria)).thenReturn(emptyPatientList);
+
+        // when then
+        mockMvc.perform(get("/patient/search")
+                        .flashAttr("patientDTO", searchCriteria))
+                .andExpect(status().isOk())
+                .andExpect(view().name("patient"))
+                .andExpect(model().attribute("patients", emptyPatientList)); // oczekujemy pustej listy
+
+        verify(patientService).searchPatients(searchCriteria);
     }
 }

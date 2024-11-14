@@ -11,7 +11,7 @@ public class ShiftFixtures {
     //shifts
     public static ShiftEntity testShift1() {
         return ShiftEntity.builder()
-                .shiftId(0L)
+                .shiftId(1L)
                 .name("morning")
                 .startTime(LocalTime.of(8, 0, 0))
                 .endTime(LocalTime.of(16, 0, 0))
@@ -20,7 +20,7 @@ public class ShiftFixtures {
 
     public static ShiftEntity testShift2() {
         return ShiftEntity.builder()
-                .shiftId(0L)
+                .shiftId(2L)
                 .name("afternoon")
                 .startTime(LocalTime.of(14, 0, 0))
                 .endTime(LocalTime.of(22, 0, 0))
