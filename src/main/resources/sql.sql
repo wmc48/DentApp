@@ -54,3 +54,24 @@ VALUES
 (2, 1, '2024-09-14'),
 (6, 2, '2024-09-14'),
 (7, 3, '2024-09-14');
+
+CREATE TABLE role (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    description TEXT NOT NULL
+);
+INSERT INTO role (role_name, description) VALUES
+('admin', 'Administrator systemu z pełnymi uprawnieniami'),
+('staff', 'Personel medyczny który zarządza rezerwacjami'),
+('doctor', 'Lekarz z możliwością dodawania zaleceń i recept, podglądem rezerwacji'),
+('patient', 'Pacjent zarządzający swoimi rezerwacjami');
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    role_id INTEGER NOT NULL REFERENCES role(role_id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    last_login TIMESTAMP WITH TIME ZONE
+);

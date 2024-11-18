@@ -21,6 +21,10 @@ public class EmployeeEntity {
     @Column(name = "employee_id")
     private Long employeeId;
 
+//    @OneToOne
+//    @JoinColumn(name = "user_id", unique = true, nullable = false)
+//    private UserEntity user;
+
     @Column(name = "name")
     private String name;
 

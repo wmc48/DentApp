@@ -19,6 +19,10 @@ public class PatientEntity {
     @Column(name = "patient_id")
     private Long patientId;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private UserEntity user;
+
     @Column(name = "name")
     private String name;
 
