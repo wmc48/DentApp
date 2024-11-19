@@ -1,5 +1,6 @@
 package com.booking_dent.dentApp.database.entity;
 
+import com.booking_dent.dentApp.security.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

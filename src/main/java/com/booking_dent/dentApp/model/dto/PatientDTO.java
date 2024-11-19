@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class PatientDTO {
 
     private Long patientId;
+    private Long userId;
     private String name;
     private String surname;
     private String pesel;

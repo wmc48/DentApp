@@ -75,3 +75,24 @@ CREATE TABLE users (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP WITH TIME ZONE
 );
+
+CREATE TABLE user_role
+(
+	user_id INT NOT NULL,
+	role_id INT NOT NULL,
+	PRIMARY KEY (user_id, role_id),
+	CONSTRAINT fk_user_role_user
+		FOREIGN KEY (user_id)
+			REFERENCES users (user_id),
+		CONSTRAINT fk_user_role_role
+		FOREIGN KEY (role_id)
+			REFERENCES role (role_id)
+)
+
+insert into users (user_id, username, email, password_hash, isActive)
+values(1, 'admin', 'admin@admin.com', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true);
+insert into users (user_id, username, email, password_hash, isActive)
+values(2, 'test1', 'test@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);
+
+insert into user_role (user_id, role_id) values(1, 1);
+insert into user_role (user_id, role_id) values(2, 4);

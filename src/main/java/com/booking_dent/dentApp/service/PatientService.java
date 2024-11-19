@@ -1,6 +1,7 @@
 package com.booking_dent.dentApp.service;
 
 import com.booking_dent.dentApp.database.entity.PatientEntity;
+import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,6 +16,18 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
+
+    public PatientEntity addPatient(PatientDTO patientDTO, UserEntity userEntity) {
+        PatientEntity newPatient = PatientEntity.builder()
+                .name(patientDTO.getName())
+                .surname(patientDTO.getSurname())
+                .pesel(patientDTO.getPesel())
+                .phone(patientDTO.getPhone())
+                .user(userEntity)
+                .build();
+        return patientRepository.save(newPatient);
+    }
+
     public List<PatientEntity> getAllPatient() {
         return patientRepository.findAll();
     }
@@ -25,7 +38,6 @@ public class PatientService {
                 patientDTO.getName(),
                 patientDTO.getSurname(),
                 patientDTO.getPesel(),
-                patientDTO.getEmail(),
                 patientDTO.getPhone()
         );
     }
@@ -41,7 +53,6 @@ public class PatientService {
         patientEntity.setName(patientDTO.getName());
         patientEntity.setSurname(patientDTO.getSurname());
         patientEntity.setPesel(patientDTO.getPesel());
-        patientEntity.setEmail(patientDTO.getEmail());
         patientEntity.setPhone(patientDTO.getPhone());
 
         return patientRepository.save(patientEntity);
@@ -51,14 +62,4 @@ public class PatientService {
         patientRepository.deleteById(patientId);
     }
 
-    public PatientEntity addPatient(PatientDTO patientDTO) {
-        PatientEntity newPatient = PatientEntity.builder()
-                .name(patientDTO.getName())
-                .surname(patientDTO.getSurname())
-                .pesel(patientDTO.getPesel())
-                .email(patientDTO.getEmail())
-                .phone(patientDTO.getPhone())
-                .build();
-        return patientRepository.save(newPatient);
-    }
 }

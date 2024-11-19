@@ -1,5 +1,6 @@
 package com.booking_dent.dentApp.model.dto;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,6 @@ public class UserDTO {
     private String username;
     private String password;
     private String email;
-    private Long roleId;
     private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
 

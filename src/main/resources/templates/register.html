@@ -18,41 +18,43 @@
                     <h4>Formularz Rejestracji</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/register" method="POST">
+                    <form th:action="@{/register/create}" method="POST" th:object="${registerDTO}">
                         <!-- username -->
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nazwa użytkownika</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Wprowadź nazwę użytkownika" required>
+                            <label class="form-label">Nazwa użytkownika</label>
+                            <input type="text" class="form-control" th:field="*{userDTO.username}" name="username" placeholder="Wprowadź nazwę użytkownika" required>
                         </div>
                         <!-- password -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Hasło</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Wprowadź hasło" required>
+                            <label class="form-label">Hasło</label>
+                            <input type="password" class="form-control" th:field="*{userDTO.password}" name="password" placeholder="Wprowadź hasło" required>
                         </div>
                         <!-- first name -->
                         <div class="mb-3">
-                            <label for="firstName" class="form-label">Imię</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Wprowadź imię" required>
+                            <label class="form-label">Imię</label>
+                            <input type="text" class="form-control" th:field="*{patientDTO.name}" name="name" placeholder="Wprowadź imię" required>
                         </div>
                         <!-- last name -->
                         <div class="mb-3">
-                            <label for="lastName" class="form-label">Nazwisko</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Wprowadź nazwisko" required>
+                            <label class="form-label">Nazwisko</label>
+                            <input type="text" class="form-control" th:field="*{patientDTO.surname}" name="surname" placeholder="Wprowadź nazwisko" required>
                         </div>
                         <!-- PESEL -->
                         <div class="mb-3">
-                            <label for="pesel" class="form-label">PESEL</label>
-                            <input type="text" class="form-control" id="pesel" name="pesel" placeholder="Wprowadź PESEL" pattern="\d{11}" title="PESEL musi składać się z 11 cyfr" required>
+                            <label class="form-label">PESEL</label>
+                            <input type="text" class="form-control" th:field="*{patientDTO.pesel}" name="pesel" placeholder="Wprowadź PESEL"  title="PESEL musi składać się z 11 cyfr" required>
+<!--                            pattern="\d{11}"-->
                         </div>
                         <!-- phone number -->
                         <div class="mb-3">
-                            <label for="phone" class="form-label">Numer telefonu</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Wprowadź numer telefonu" pattern="\d{9}" title="Numer telefonu musi składać się z 9 cyfr" required>
+                            <label class="form-label">Numer telefonu</label>
+                            <input type="text" class="form-control" th:field="*{patientDTO.phone}" name="phone" placeholder="Wprowadź numer telefonu" title="Numer telefonu musi składać się z 9 cyfr" required>
+<!--                            pattern="\d{9}"-->
                         </div>
                         <!-- email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Wprowadź adres e-mail" required>
+                            <label class="form-label">E-mail</label>
+                            <input type="text" class="form-control" th:field="*{userDTO.email}" name="email" placeholder="Wprowadź adres e-mail" required>
                         </div>
                         <!-- submit button -->
                         <div class="d-grid">

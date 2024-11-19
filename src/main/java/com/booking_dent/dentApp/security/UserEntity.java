@@ -1,4 +1,4 @@
-package com.booking_dent.dentApp.database.entity;
+package com.booking_dent.dentApp.security;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+
 @Data
 @Entity
 @Builder
@@ -27,13 +29,24 @@ public class UserEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private RoleEntity role;
+//    @ManyToOne
+//    @JoinColumn(name = "role_id", nullable = false)
+//    private RoleEntity role;
 
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime lastLogin;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles;
+
+    @Column(name = "employee_id")
+    private Boolean isActive;
 
 }

@@ -12,7 +12,6 @@ public class PatientFixtures {
                 .name("Jan")
                 .surname("Kowalski")
                 .pesel("12345678901")
-                .email("jan.kowalski@gmail.com")
                 .phone("123456789")
                 .build();
     }
@@ -22,7 +21,6 @@ public class PatientFixtures {
                 .name("Adam")
                 .surname("Testowy")
                 .pesel("999999999999")
-                .email("ad.test@gmail.com")
                 .phone("544548")
                 .build();
     }
