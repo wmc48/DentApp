@@ -38,7 +38,7 @@ public class UserEntity {
 
     private LocalDateTime lastLogin;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -46,7 +46,7 @@ public class UserEntity {
     )
     private Set<RoleEntity> roles;
 
-    @Column(name = "employee_id")
+    @Column(name = "is_active")
     private Boolean isActive;
 
 }

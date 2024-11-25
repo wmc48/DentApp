@@ -5,6 +5,7 @@ import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -42,12 +44,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) {
-        UserEntity user = userRepository.findByUsername(username);
-        List<SimpleGrantedAuthority> authorities = getUserAuthority(user.getRoles());
-        return buildUserForAuthentication(user, authorities);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Niepoprawne dane uwierzytelniające"));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPasswordHash(),
+                user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                        .collect(Collectors.toList())
+        );
     }
+
 
     private List<SimpleGrantedAuthority> getUserAuthority(Set<RoleEntity> roles) {
 

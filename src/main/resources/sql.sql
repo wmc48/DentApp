@@ -90,9 +90,12 @@ CREATE TABLE user_role
 )
 
 insert into users (user_id, username, email, password_hash, isActive)
-values(1, 'admin', 'admin@admin.com', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true);
+values(1, 'admin', 'admin@admin.com', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true); //admin
 insert into users (user_id, username, email, password_hash, isActive)
-values(2, 'test1', 'test@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);
+values(2, 'test1', 'test@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);//test
+insert into users (user_id, username, email, password_hash, isActive)
+values(3, 'doc1', 'tedst@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);//test
 
 insert into user_role (user_id, role_id) values(1, 1);
 insert into user_role (user_id, role_id) values(2, 4);
+insert into user_role (user_id, role_id) values(3, 3);
