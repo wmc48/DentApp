@@ -60,11 +60,6 @@ CREATE TABLE role (
     role_name VARCHAR(50) UNIQUE NOT NULL,
     description TEXT NOT NULL
 );
-INSERT INTO role (role_name, description) VALUES
-('admin', 'Administrator systemu z pełnymi uprawnieniami'),
-('staff', 'Personel medyczny który zarządza rezerwacjami'),
-('doctor', 'Lekarz z możliwością dodawania zaleceń i recept, podglądem rezerwacji'),
-('patient', 'Pacjent zarządzający swoimi rezerwacjami');
 
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
@@ -88,6 +83,12 @@ CREATE TABLE user_role
 		FOREIGN KEY (role_id)
 			REFERENCES role (role_id)
 )
+
+INSERT INTO role (role_name, description) VALUES
+('admin', 'Administrator systemu z pełnymi uprawnieniami'),
+('staff', 'Personel medyczny który zarządza rezerwacjami'),
+('doctor', 'Lekarz z możliwością dodawania zaleceń i recept, podglądem rezerwacji'),
+('patient', 'Pacjent zarządzający swoimi rezerwacjami');
 
 insert into users (user_id, username, email, password_hash, isActive)
 values(1, 'admin', 'admin@admin.com', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true); //admin

@@ -6,7 +6,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav th:replace="~{navbar :: navbar}"></nav>
+<!--<nav th:replace="~{navbar :: navbar}"></nav>-->
 <div class="container mt-4">
 
     <h2 class="mb-4">Obecni pracownicy</h2>
@@ -27,7 +27,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/employee/add}" method="post" th:object="${employeeDTO}">
+                    <form th:action="@{/staffView/employee/add}" method="post" th:object="${employeeDTO}">
                         <div class="form-group">
                             Imię: <input type="text" class="form-control" field="*{name}" name="name"><br>
                             Nazwisko: <input type="text" class="form-control" field="*{surname}" name="surname"><br>
@@ -65,14 +65,14 @@
 
         <td>
             <!-- przycisk szczegóły -->
-            <form th:action="@{/employee/show/{employeeId}(employeeId=${employee.employeeId})}"
+            <form th:action="@{/staffView/employee/show/{employeeId}(employeeId=${employee.employeeId})}"
                   method="GET">
                 <button type="submit" class="btn btn-info">Szczegóły</button>
             </form>
         </td>
         <td>
             <!-- przycisk usuń -->
-            <form th:action="@{/employee/delete/{employeeId}(employeeId=${employee.employeeId})}"
+            <form th:action="@{/staffView/employee/delete/{employeeId}(employeeId=${employee.employeeId})}"
                   th:method="DELETE">
                 <button type="submit" class="btn btn-warning">Usuń</button>
             </form>

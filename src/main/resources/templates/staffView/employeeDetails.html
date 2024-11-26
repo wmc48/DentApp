@@ -39,7 +39,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form th:action="@{/employee/update/{employeeId}(employeeId=${employee.employeeId})}" th:object="${employee}" method="post">
+                                <form th:action="@{/staffView/employee/update/{employeeId}(employeeId=${employee.employeeId})}" th:object="${employee}" method="post">
                                     <input type="hidden" name="_method" value="put"/>
                                     <div class="form-group">
                                         Imię: <input type="text" class="form-control" th:field="*{name}" name="name"><br>
@@ -82,7 +82,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/employee/scheduleadd}" method="post">
+                    <form th:action="@{/staffView/employee/scheduleadd}" method="post">
                         <input type="hidden" name="employeeId" th:value="${employee.employeeId}"/>
                         <div class="form-group">
                             <label for="workDateFrom">Wybierz datę od:</label>
@@ -115,8 +115,8 @@
     <div>
         <h2 th:text="'Grafik dla ' + ${employee.surname}"></h2>
         <h2 th:text="'Widok dla miesiąca ' + ${currentMonthName}"></h2>
-        <a th:href="@{/employee/show/{id}(id=${employee.employeeId}, month=${previousMonth})}" class="btn btn-primary">Poprzedni miesiąc</a>
-        <a th:href="@{/employee/show/{id}(id=${employee.employeeId}, month=${nextMonth})}" class="btn btn-primary">Następny miesiąc</a>
+        <a th:href="@{/staffView/employee/show/{id}(id=${employee.employeeId}, month=${previousMonth})}" class="btn btn-primary">Poprzedni miesiąc</a>
+        <a th:href="@{/staffView/employee/show/{id}(id=${employee.employeeId}, month=${nextMonth})}" class="btn btn-primary">Następny miesiąc</a>
     </div>
 
     <table class="table table-striped">
@@ -137,7 +137,7 @@
     </table>
 
 
-    <a class="btn btn-primary" th:href="@{/employee}">Pokaż wszystkich pracowników</a>
+    <a class="btn btn-primary" th:href="@{/staffView/employee}">Pokaż wszystkich pracowników</a>
 </div>
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

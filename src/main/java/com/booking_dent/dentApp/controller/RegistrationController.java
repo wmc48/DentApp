@@ -1,12 +1,12 @@
 package com.booking_dent.dentApp.controller;
 
 
-import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.model.dto.RegisterDTO;
 import com.booking_dent.dentApp.model.dto.UserDTO;
-import com.booking_dent.dentApp.service.PatientService;
+import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserService;
+import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -43,10 +43,10 @@ public class RegistrationController {
         UserDTO userDTO = registerDTO.getUserDTO();
         PatientDTO patientDTO = registerDTO.getPatientDTO();
 
-        UserEntity newUser = userService.createAccount(userDTO);
+        UserEntity newUser = userService.createPatientAccount(userDTO);
         patientService.addPatient(patientDTO, newUser);
 
         redirectAttributes.addFlashAttribute("message", "Rejestracja zakończona sukcesem. Zaloguj się.");
-        return "redirect:/login";
+        return "redirect:/index";
     }
 }

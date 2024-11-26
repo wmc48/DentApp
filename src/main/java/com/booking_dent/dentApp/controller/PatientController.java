@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/patient")
+@RequestMapping("/staffView/patients")
 @AllArgsConstructor
 public class PatientController {
 
@@ -24,7 +24,7 @@ public class PatientController {
     public String showPatientList(Model model){
         List<PatientEntity> patients = patientService.getAllPatient();
         model.addAttribute("patients", patients);
-        return "patient";
+        return "staffView/patients";
     }
 
     @GetMapping("/search")
@@ -38,7 +38,7 @@ public class PatientController {
         model.addAttribute("pesel", patientDTO.getPesel());
         model.addAttribute("email", patientDTO.getEmail());
         model.addAttribute("phone", patientDTO.getPhone());
-        return "patient";
+        return "staffView/patients";
     }
 
     @GetMapping("/show/{patientId}")
@@ -58,12 +58,12 @@ public class PatientController {
                                 @ModelAttribute("patient") PatientDTO patientDTO
     ){
         patientService.updatePatient(patientDTO,patientId);
-        return "redirect:/patient/show/" + patientId;
+        return "redirect:/staffView/patients/show/" + patientId;
     }
 
     @DeleteMapping("/delete/{patientId}")
     public String deletePatient(@PathVariable("patientId") Long patientId) {
         patientService.deleteById(patientId);
-        return "redirect:/patient";
+        return "redirect:/staffView/patients";
     }
 }

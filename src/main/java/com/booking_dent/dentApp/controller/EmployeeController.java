@@ -12,11 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/staffView/employee")
 @AllArgsConstructor
 public class EmployeeController {
 
@@ -27,20 +28,20 @@ public class EmployeeController {
     public String showEmployeesList(Model model) {
         List<EmployeeEntity> employees = employeeService.getAllEmployees();
         model.addAttribute("employees", employees);
-        return "employee";
+        return "/staffView/employee";
     }
 
 
     @PostMapping("/add")
     public String addEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
         employeeService.addEmployee(employeeDTO);
-        return "redirect:/employee";
+        return "redirect:/staffView/employee";
     }
 
     @DeleteMapping("/delete/{employeeId}")
     public String deleteStaff(@PathVariable("employeeId") Long employeeId) {
         employeeService.deleteById(employeeId);
-        return "redirect:/employee";
+        return "redirect:/staffView/employee";
     }
 
     @GetMapping("/show/{employeeId}")
@@ -65,7 +66,7 @@ public class EmployeeController {
         model.addAttribute("nextMonth", monthDetails.getNextMonth().getYear() + "-" + String.format("%02d", monthDetails.getNextMonth().getMonthValue()));
         model.addAttribute("currentMonthName", monthDetails.getCurrentMonthName());
 
-        return "employeeDetails";
+        return "staffView/employeeDetails";
     }
 
 
@@ -83,7 +84,7 @@ public class EmployeeController {
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
 
-        return "redirect:/employee/show/" + employeeId;
+        return "redirect:/staffView/employee/show/" + employeeId;
     }
 
 
@@ -93,7 +94,7 @@ public class EmployeeController {
             @ModelAttribute("employee") EmployeeDTO employeeDTO
     ) {
         employeeService.updateEmployee(employeeDTO, employeeId);
-        return "redirect:/employee/show/" + employeeId;
+        return "redirect:/staffView/employee/show/" + employeeId;
     }
 }
 

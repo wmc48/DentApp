@@ -37,7 +37,7 @@
                 </button>
             </td>
             <td>
-                <form th:action="@{/patient/delete/{patientId}(patientId=${patient.patientId})}"
+                <form th:action="@{/staffView/patients/delete/{patientId}(patientId=${patient.patientId})}"
                       th:method="DELETE">
                     <button type="submit" class="btn btn-warning">Usuń</button>
                 </form>
@@ -88,7 +88,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form th:action="@{/patient/update/{patientId}(patientId=${patient.patientId})}"
+                    <form th:action="@{/staffView/patients/update/{patientId}(patientId=${patient.patientId})}"
                           th:object="${patient}" method="post">
                         <input type="hidden" name="_method" value="put"/>
                         <div class="form-group">
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    <a class="btn btn-primary" th:href="@{/patient}">Pokaż wszystkich pacjentów</a>
+    <a class="btn btn-primary" th:href="@{/staffView/patients}">Pokaż wszystkich pacjentów</a>
 </div>
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

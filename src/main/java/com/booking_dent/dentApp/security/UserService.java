@@ -1,12 +1,9 @@
 package com.booking_dent.dentApp.security;
 
-import com.booking_dent.dentApp.database.repository.RoleRepository;
 import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,16 +22,18 @@ public class UserService implements UserDetailsService {
 
     public final UserRepository userRepository;
     public final PatientService patientService;
-    public final RoleRepository roleRepository;
-//    private final PasswordEncoder passwordEncoder;
+    //public final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserEntity createAccount(UserDTO userDTO){
 
-//        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
+    @Transactional
+    public UserEntity createPatientAccount(UserDTO userDTO){
+
+        String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         UserEntity newUser = UserEntity.builder()
                 .username(userDTO.getUsername())
-//                .passwordHash(hashedPassword)
+                .passwordHash(hashedPassword)
                 .passwordHash(userDTO.getPassword())
                 .email(userDTO.getEmail())
                 .createdAt(LocalDateTime.now())
