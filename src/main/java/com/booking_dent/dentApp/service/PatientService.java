@@ -16,13 +16,13 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
 
-
     public PatientEntity addPatient(PatientDTO patientDTO, UserEntity userEntity) {
         PatientEntity newPatient = PatientEntity.builder()
                 .name(patientDTO.getName())
                 .surname(patientDTO.getSurname())
                 .pesel(patientDTO.getPesel())
                 .phone(patientDTO.getPhone())
+                .email(patientDTO.getEmail())
                 .user(userEntity)
                 .build();
         return patientRepository.save(newPatient);
@@ -31,7 +31,6 @@ public class PatientService {
     public List<PatientEntity> getAllPatient() {
         return patientRepository.findAll();
     }
-
 
     public List<PatientEntity> searchPatients(PatientDTO patientDTO) {
         return patientRepository.searchPatients(
@@ -47,19 +46,20 @@ public class PatientService {
                 .orElseThrow(() -> new EntityNotFoundException("patient not found, patientId: " + patientId));
     }
 
+    public void deleteById(Long patientId) {
+        patientRepository.deleteById(patientId);
+    }
+
     public PatientEntity updatePatient(PatientDTO patientDTO, Long patientId) {
         PatientEntity patientEntity = findPatientById(patientId);
 
         patientEntity.setName(patientDTO.getName());
         patientEntity.setSurname(patientDTO.getSurname());
         patientEntity.setPesel(patientDTO.getPesel());
+        patientEntity.setEmail(patientDTO.getEmail());
         patientEntity.setPhone(patientDTO.getPhone());
 
         return patientRepository.save(patientEntity);
-    }
-
-    public void deleteById(Long patientId) {
-        patientRepository.deleteById(patientId);
     }
 
 }

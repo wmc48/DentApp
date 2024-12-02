@@ -1,7 +1,7 @@
 package com.booking_dent.dentApp.unitTests.controller;
 
 
-import com.booking_dent.dentApp.controller.PatientController;
+import com.booking_dent.dentApp.controller.PatientListController;
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PatientController.class)
-class PatientControllerTest {
+@WebMvcTest(PatientListController.class)
+class PatientListControllerTest {
 
     @Autowired
     private MockMvc mockMvc; //symulowanie żądań HTTP do kontrolera w testach

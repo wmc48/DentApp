@@ -2,7 +2,7 @@ package com.booking_dent.dentApp.controller;
 
 
 import com.booking_dent.dentApp.model.dto.PatientDTO;
-import com.booking_dent.dentApp.model.dto.RegisterDTO;
+import com.booking_dent.dentApp.model.dto.AccountDTO;
 import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserService;
@@ -27,17 +27,17 @@ public class RegistrationController {
 
     @GetMapping
     public String showRegistrationForm(Model model) {
-        RegisterDTO registerDTO = new RegisterDTO();
-        registerDTO.setUserDTO(new UserDTO()); //ustawianie obiektu userDTO
-        registerDTO.setPatientDTO(new PatientDTO()); //ustawianie obiektu patientDTO
-        model.addAttribute("registerDTO", registerDTO);
+        AccountDTO accountDTO = new AccountDTO();
+        accountDTO.setUserDTO(new UserDTO()); //ustawianie obiektu userDTO
+        accountDTO.setPatientDTO(new PatientDTO()); //ustawianie obiektu patientDTO
+        model.addAttribute("accountDTO", accountDTO);
         return "register";
     }
 
     @Transactional
     @PostMapping("/create")
     public String registerUser(
-            @ModelAttribute("registerDTO") RegisterDTO registerDTO,
+            @ModelAttribute("registerDTO") AccountDTO registerDTO,
             RedirectAttributes redirectAttributes
     ) {
         UserDTO userDTO = registerDTO.getUserDTO();

@@ -65,10 +65,9 @@ CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    role_id INTEGER NOT NULL REFERENCES role(role_id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    last_login TIMESTAMP WITH TIME ZONE
+    last_login TIMESTAMP WITH TIME ZONE,
+	    is_active BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE user_role
@@ -90,12 +89,12 @@ INSERT INTO role (role_name, description) VALUES
 ('doctor', 'Lekarz z możliwością dodawania zaleceń i recept, podglądem rezerwacji'),
 ('patient', 'Pacjent zarządzający swoimi rezerwacjami');
 
-insert into users (user_id, username, email, password_hash, isActive)
-values(1, 'admin', 'admin@admin.com', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true); //admin
-insert into users (user_id, username, email, password_hash, isActive)
-values(2, 'test1', 'test@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);//test
-insert into users (user_id, username, email, password_hash, isActive)
-values(3, 'doc1', 'tedst@admin.com', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);//test
+insert into users (user_id, username, password_hash, is_active)
+values(1, 'admin', '$2a$12$OH4ZfjYxC13YS6SsQtNnZuFVZfwIkjUP3Q.3RSh6aIWbu/wdfWkLi', true);
+insert into users (user_id, username, password_hash, is_active)
+values(2, 'test1', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);
+insert into users (user_id, username, password_hash, is_active)
+values(3, 'doc1', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau', true);
 
 insert into user_role (user_id, role_id) values(1, 1);
 insert into user_role (user_id, role_id) values(2, 4);

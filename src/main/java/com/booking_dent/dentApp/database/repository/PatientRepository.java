@@ -1,12 +1,14 @@
 package com.booking_dent.dentApp.database.repository;
 
 import com.booking_dent.dentApp.database.entity.PatientEntity;
+import com.booking_dent.dentApp.security.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
@@ -22,5 +24,8 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     @Override
     @Query("SELECT p FROM PatientEntity p ORDER BY p.surname ASC") // Sortowanie rosnące według nazwiska
     List<PatientEntity> findAll();
+
+    Optional<PatientEntity> findByUser(UserEntity user);
+
 }
 

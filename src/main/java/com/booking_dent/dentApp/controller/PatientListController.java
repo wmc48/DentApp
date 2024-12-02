@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/staffView/patients")
 @AllArgsConstructor
-public class PatientController {
+public class PatientListController {
 
     private final PatientService patientService;
     private final EmployeeService employeeService;

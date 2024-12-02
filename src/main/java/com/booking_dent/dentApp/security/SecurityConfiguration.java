@@ -38,9 +38,11 @@ public class SecurityConfiguration {
                         //.requestMatchers("/", "/index", "/navbar", "/register", "/static").permitAll() //główna strona i /index dostępne dla wszystkich
 //                        .requestMatchers("/patient/**", "/patientDetails/**", "/reservation/**").hasAnyAuthority("patient", "admin", "staff", "doctor")
 //                        .requestMatchers("/employee/**", "/employeeDetails/**", "/scheduleReservation").hasAnyAuthority("admin", "staff", "doctor")
+                        .requestMatchers("/patientView/**").hasAnyAuthority("patient")
                         .anyRequest().permitAll() //wszystkie inne strony wymagają uwierzytelnienia
                 )
                 .formLogin(formLogin -> formLogin
+                        .defaultSuccessUrl("/patientView/dashboard", true) // po zalogowaniu
                         .permitAll() //formularz logowania dostępny dla wszystkich
                 )
                 .logout(logout -> logout

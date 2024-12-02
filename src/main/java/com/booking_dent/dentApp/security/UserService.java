@@ -1,5 +1,8 @@
 package com.booking_dent.dentApp.security;
 
+import com.booking_dent.dentApp.database.entity.PatientEntity;
+import com.booking_dent.dentApp.database.repository.PatientRepository;
+import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
@@ -22,26 +25,25 @@ public class UserService implements UserDetailsService {
 
     public final UserRepository userRepository;
     public final PatientService patientService;
-    //public final RoleRepository roleRepository;
+    public final PatientRepository patientRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     @Transactional
-    public UserEntity createPatientAccount(UserDTO userDTO){
-
+    public UserEntity createPatientAccount(UserDTO userDTO) {
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         UserEntity newUser = UserEntity.builder()
                 .username(userDTO.getUsername())
                 .passwordHash(hashedPassword)
-                .passwordHash(userDTO.getPassword())
-                .email(userDTO.getEmail())
                 .createdAt(LocalDateTime.now())
                 .build();
-        return userRepository.save(newUser);
 
+        UserEntity savedUser = userRepository.save(newUser);
+
+        //przypisanie roli dla nowo powstałego usera - (patient = 4)
+        userRepository.assignUserRole(savedUser.getUserId(), 4); // Role ID for patient
+        return savedUser;
     }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username)

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDTO { //utworzenie klasy aby połączyć dwa obiekty w jeden model dla thymeleaf
+public class AccountDTO { //utworzenie klasy aby połączyć dwa obiekty w jeden model dla thymeleaf
         private UserDTO userDTO;
         private PatientDTO patientDTO;
 

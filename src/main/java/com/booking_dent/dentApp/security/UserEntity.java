@@ -26,13 +26,6 @@ public class UserEntity {
     @Column(nullable = false)
     private String passwordHash;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
-//    @ManyToOne
-//    @JoinColumn(name = "role_id", nullable = false)
-//    private RoleEntity role;
-
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
