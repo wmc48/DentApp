@@ -33,4 +33,5 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
             @Param("reservationId") Long reservationId,
             Pageable pageable // Accept pageable for pagination
     );
+    List<ReservationEntity> findByPatient_PatientId(Long patientId);
 }

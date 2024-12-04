@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Szczegóły pracownika</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav th:replace="~{navbarLogged :: navbar}"></nav>
+<div class="container">
+    <h2>Dostępne terminy dla lekarza <span th:text="${employee.name} + ' ' + ${employee.surname}"></span></h2>
+    <h2>pacjent id <span th:text="${patientId}"></span></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Data</th>
+            <th>Zmiana</th>
+            <th>Godziny pracy</th>
+            <th>Wybierz godzinę</th>
+            <th>Akcja</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="schedule : ${schedules}">
+            <td th:text="${schedule.workDate}"></td>
+            <td th:text="${schedule.shiftName}"></td>
+            <td th:text="${schedule.startTime} + ' - ' + ${schedule.endTime}"></td>
+            <td>
+                <!-- ukryte pola formularza -->
+                <form th:action="@{/reservation/add}" method="post">
+                    <input type="hidden" name="employeeId" th:value="${employee.employeeId}" />
+                    <input type="hidden" name="patientId" th:value="${patientId}" />
+                    <input type="hidden" name="workDate" th:value="${schedule.workDate}" />
+                    <select class="form-control" name="selectedHour">
+                        <option th:each="hour : ${schedule.availableHours}"
+                                th:value="${hour}"
+                                th:text="${hour}">
+                        </option>
+                    </select>
+                    <td>
+                    <button type="submit" class="btn btn-primary">Umów</button>
+                    </td>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <a th:href="@{/reservation/showDoctor/{employeeId}/{patientId}(employeeId=${employee.employeeId}, patientId=${patientId}, page=${currentPage - 1})}"
+           th:if="${currentPage > 0}">Poprzednia</a>
+        <span>Strona <span th:text="${currentPage + 1}"></span> z <span th:text="${totalPages}"></span></span>
+        <a th:href="@{/reservation/showDoctor/{employeeId}/{patientId}(employeeId=${employee.employeeId}, patientId=${patientId}, page=${currentPage + 1})}"
+           th:if="${currentPage + 1 < totalPages}">Następna</a>
+    </div>
+
+    <a th:href="@{/patientView/reservation}" class="btn btn-secondary">Powrót</a>
+</div>
+</body>
+</html>

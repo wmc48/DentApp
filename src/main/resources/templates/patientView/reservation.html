@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DentApp - Panel pacjenta</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav th:replace="~{navbarLogged :: navbar}"></nav>
+
+<div class="container mt-4">
+<h2 class="mb-4">Złożone rezerwacje</h2>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reservationModal">
+    Umów wizytę
+</button>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+
+    <tr>
+        <th>ID</th>
+        <th>Lekarz</th>
+        <th>Data</th>
+        <th></th>
+    </tr>
+    <p th:if="${#lists.isEmpty(reservations)}">Nie masz żadnych rezerwacji.</p>
+    </thead>
+    <tbody>
+    <tr th:each="reservation : ${reservations}">
+        <td th:text="${reservation.reservationId}"></td>
+        <td th:text="${reservation.employee.surname} + ' ' + ${reservation.employee.name}"></td>
+        <td th:text="${reservation.dateAndTime}"></td>
+
+        <td>
+            <!-- przycisk usuń -->
+            <form th:action="@{/reservation/delete/{reservationId}(reservationId=${reservation.reservationId})}"
+                  th:method="DELETE">
+                <button type="submit" class="btn btn-warning">Usuń</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+    </div>
+
+<!-- Modal do umawiania wizyty -->
+<div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel">Umów wizytę</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bookingForm" th:action="@{/patientView/reservation/schedule}" method="post">
+                    <div>
+                        <label for="employee">Wybierz lekarza:</label>
+                        <select id="employee" name="employeeId" class="form-control">
+                            <option th:each="employee : ${employees}"
+                            th:value="${employee.employeeId}"
+                            th:text="${employee.name + ' ' + employee.surname}"></option>
+                        </select>
+                    </div>
+
+                    <!-- Ukryte pole dla patientId -->
+                    <input type="hidden" name="patientId" th:value="${patientId}" />
+
+                    <button type="submit" class="btn btn-primary">Wyszukaj terminy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<footer class="bg-light text-center text-muted py-3 mt-5">
+    <p>&copy; 2024 DentApp. Wszystkie prawa zastrzeżone.</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

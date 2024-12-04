@@ -7,6 +7,8 @@ import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,6 +60,18 @@ public class UserService implements UserDetailsService {
                         .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                         .collect(Collectors.toList())
         );
+    }
+
+    public boolean checkRole(Principal principal, String roleToCheck){
+        //sprawdzenie ról użytkownika
+        //authorities przechowuje wszystkie role przypisane do aktualnie zalogowanego użytkownika.
+        Collection<? extends GrantedAuthority> authorities =
+                ((Authentication) principal).getAuthorities();
+
+        //sprawdzamy czy zalogowany user ma role 'roleToCheck'
+        boolean isThisRoleToCheck = authorities.stream()
+                .anyMatch(auth -> auth.getAuthority().equals(roleToCheck));
+        return isThisRoleToCheck;
     }
 
 

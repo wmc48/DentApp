@@ -5,6 +5,7 @@ import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserRepository;
+import com.booking_dent.dentApp.security.UserService;
 import com.booking_dent.dentApp.service.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class PatientDetailsController {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
     private final PatientService patientService;
+    private final UserService userService;
+
 
 
     @GetMapping
@@ -52,19 +55,9 @@ public class PatientDetailsController {
 
     @PutMapping("/update")
     public String updatePatient(Principal principal, @ModelAttribute("patient") PatientDTO patientDTO) {
-        //pobierz nazwę użytkownika aktualnie zalogowanego użytkownika
-        String username = principal.getName();
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        //pobierz identyfikator pacjenta na podstawie nazwy użytkownika
-        PatientEntity patient = patientRepository.findByUser(user)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
-
-        Long patientId = patient.getPatientId();
-
+        //pobierz nazwę użytkownika aktualnie zalogowanego użytkownika i na jej podstawie znajdź id pacjenta
+        Long patientId = patientService.getPatientIdByUsername(principal.getName());
         patientService.updatePatient(patientDTO, patientId);
-
         return "redirect:/patientView/patientDetails";
     }
 

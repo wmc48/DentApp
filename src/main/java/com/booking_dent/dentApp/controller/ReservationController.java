@@ -5,17 +5,22 @@ import com.booking_dent.dentApp.database.entity.ReservationEntity;
 import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.model.dto.ReservationDTO;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
+import com.booking_dent.dentApp.security.UserService;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ReservationService;
 import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -26,6 +31,7 @@ public class ReservationController {
     private final ReservationService reservationService;
     private  final EmployeeService employeeService;
     private final ScheduleService scheduleService;
+    private final UserService userService;
 
 
     @PostMapping("/schedule") // niezbędne aby przekazać pathBarable do showDoctors
@@ -81,13 +87,14 @@ public class ReservationController {
             @RequestParam("workDate") String workDate,
             @RequestParam("selectedHour") String selectedHour,
             @RequestParam("employeeId") Long employeeId,
-            @RequestParam("patientId") Long patientId) {
+            @RequestParam("patientId") Long patientId,
+            Principal principal) {
 
-        // połączenie daty i godziny
+        //połączenie daty i godziny
         String dateTimeString = workDate + "T" + selectedHour; // tworzenie formatu ISO 8601
         LocalDateTime dateAndTime = LocalDateTime.parse(dateTimeString);
 
-        // tworzenie DTO
+        //tworzenie DTO
 
         ReservationDTO reservationDTO = ReservationDTO.builder()
                 .employeeId(employeeId)
@@ -96,6 +103,14 @@ public class ReservationController {
                 .build();
 
         reservationService.addReservation(reservationDTO);
+
+        //sprawdzenie ról użytkownika
+        //authorities w chechRole przechowuje wszystkie role przypisane do aktualnie zalogowanego użytkownika.
+        boolean isPatient = userService.checkRole(principal, "patient");
+
+        if (isPatient) {
+            return "redirect:/patientView/reservation";
+        }
         return "redirect:/reservation";
     }
 

@@ -4,6 +4,7 @@ import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
+import com.booking_dent.dentApp.security.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.List;
 public class PatientService {
 
     private final PatientRepository patientRepository;
+    private final UserRepository userRepository;
 
     public PatientEntity addPatient(PatientDTO patientDTO, UserEntity userEntity) {
         PatientEntity newPatient = PatientEntity.builder()
@@ -60,6 +62,18 @@ public class PatientService {
         patientEntity.setPhone(patientDTO.getPhone());
 
         return patientRepository.save(patientEntity);
+    }
+
+    public Long getPatientIdByUsername(String username){
+
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        //pobierz identyfikator pacjenta na podstawie nazwy użytkownika
+        PatientEntity patient = patientRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+
+        return patient.getPatientId();
     }
 
 }
