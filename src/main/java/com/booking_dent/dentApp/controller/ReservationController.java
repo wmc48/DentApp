@@ -12,15 +12,11 @@ import com.booking_dent.dentApp.service.ScheduleService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -32,7 +28,6 @@ public class ReservationController {
     private  final EmployeeService employeeService;
     private final ScheduleService scheduleService;
     private final UserService userService;
-
 
     @PostMapping("/schedule") // niezbędne aby przekazać pathBarable do showDoctors
     public String processScheduleReservation(
@@ -77,8 +72,15 @@ public class ReservationController {
     }
 
     @DeleteMapping("/delete/{reservationId}")
-    public String deleteReservation(@PathVariable("reservationId") Long reservationId) {
+    public String deleteReservation(@PathVariable("reservationId") Long reservationId, Principal principal) {
         reservationService.deleteById(reservationId);
+        //sprawdzenie ról użytkownika
+        //authorities w chechRole przechowuje wszystkie role przypisane do aktualnie zalogowanego użytkownika.
+        boolean isPatient = userService.checkRole(principal, "patient");
+
+        if (isPatient) {
+            return "redirect:/patientView/reservation";
+        }
         return "redirect:/reservation";
     }
 
@@ -88,26 +90,15 @@ public class ReservationController {
             @RequestParam("selectedHour") String selectedHour,
             @RequestParam("employeeId") Long employeeId,
             @RequestParam("patientId") Long patientId,
-            Principal principal) {
-
-        //połączenie daty i godziny
-        String dateTimeString = workDate + "T" + selectedHour; // tworzenie formatu ISO 8601
-        LocalDateTime dateAndTime = LocalDateTime.parse(dateTimeString);
-
-        //tworzenie DTO
-
-        ReservationDTO reservationDTO = ReservationDTO.builder()
-                .employeeId(employeeId)
-                .patientId(patientId)
-                .dateAndTime(dateAndTime)
-                .build();
-
-        reservationService.addReservation(reservationDTO);
+            Principal principal,
+            Model model) {
+        //bład jeśliużytkownik próbuje dodać wizyte chociaż od date.now ma już dodana
+        //czyli uż może mieć zaplanowaną w przó tylko jedną wizyte
+        reservationService.addReservation(workDate, selectedHour, employeeId, patientId);
 
         //sprawdzenie ról użytkownika
         //authorities w chechRole przechowuje wszystkie role przypisane do aktualnie zalogowanego użytkownika.
         boolean isPatient = userService.checkRole(principal, "patient");
-
         if (isPatient) {
             return "redirect:/patientView/reservation";
         }
@@ -121,7 +112,6 @@ public class ReservationController {
             @RequestParam(value = "size", defaultValue = "10") int size, // Number of records per page
             Model model
     ) {
-
         // pobranie wyników wyszikiwania i przypisanie do page
         Page<ReservationEntity> reservationPage = reservationService.findReservation(reservationDTO, PageRequest.of(page, size));
 

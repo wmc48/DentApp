@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -33,5 +34,12 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
             @Param("reservationId") Long reservationId,
             Pageable pageable // Accept pageable for pagination
     );
+
     List<ReservationEntity> findByPatient_PatientId(Long patientId);
+
+    @Query("SELECT r FROM ReservationEntity r WHERE r.patient.id = :patientId AND r.dateAndTime > :currentDateTime")
+    List<ReservationEntity> findFutureReservationsByPatient(
+            @Param("patientId") Long patientId,
+            @Param("currentDateTime") LocalDateTime currentDateTime
+    );
 }

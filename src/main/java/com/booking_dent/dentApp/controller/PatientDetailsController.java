@@ -5,15 +5,17 @@ import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserRepository;
-import com.booking_dent.dentApp.security.UserService;
 import com.booking_dent.dentApp.service.PatientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -24,9 +26,6 @@ public class PatientDetailsController {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
     private final PatientService patientService;
-    private final UserService userService;
-
-
 
     @GetMapping
     public String showDashboard(Model model, Principal principal) {
@@ -41,7 +40,8 @@ public class PatientDetailsController {
         PatientEntity patient = patientRepository.findByUser(user)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
 
-        //dodaj dane użytkownika i pacjenta do modelu
+        PatientDTO patientDTO = patientService.toPatientDTO(patient);//aby podstawiły się uzupełnione pola w form edit
+
         model.addAttribute("userId", user.getUserId());
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", patient.getEmail());
@@ -49,16 +49,32 @@ public class PatientDetailsController {
         model.addAttribute("patientSurname", patient.getSurname());
         model.addAttribute("pesel", patient.getPesel());
         model.addAttribute("phone", patient.getPhone());
-
+        model.addAttribute("patientDTO", patientDTO);
         return "patientView/patientDetails";
     }
 
-    @PutMapping("/update")
-    public String updatePatient(Principal principal, @ModelAttribute("patient") PatientDTO patientDTO) {
-        //pobierz nazwę użytkownika aktualnie zalogowanego użytkownika i na jej podstawie znajdź id pacjenta
+    @PostMapping("/update")
+    public String updatePatient(
+            Principal principal,
+            @ModelAttribute("patient") @Valid PatientDTO patientDTO,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes) {
+
+        //walidacja danych wejściowych
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Nieprawidłowe dane. Spróbuj ponownie.");
+            return "redirect:/patientView/patientDetails";
+        }
+
         Long patientId = patientService.getPatientIdByUsername(principal.getName());
-        patientService.updatePatient(patientDTO, patientId);
+
+        //zaktualizuj dane pacjenta
+        try {
+            patientService.updatePatient(patientDTO, patientId, principal);
+            redirectAttributes.addFlashAttribute("successMessage", "Dane pacjenta zostały zaktualizowane.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Błąd podczas aktualizacji danych pacjenta.");
+        }
         return "redirect:/patientView/patientDetails";
     }
-
 }

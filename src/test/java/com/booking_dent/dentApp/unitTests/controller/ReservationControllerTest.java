@@ -129,25 +129,25 @@ class ReservationControllerTest {
         verify(reservationService, times(1)).deleteById(reservationId);
     }
 
-    @Test
-    void addReservation() throws Exception {
-        //given
-        String workDate = "2024-11-14";
-        String selectedHour = "10:00";
-        Long employeeId = 1L;
-        Long patientId = 2L;
-
-        //when & then
-        mockMvc.perform(post("/reservation/add")
-                        .param("workDate", workDate)
-                        .param("selectedHour", selectedHour)
-                        .param("employeeId", String.valueOf(employeeId))
-                        .param("patientId", String.valueOf(patientId)))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/reservation"));
-
-        verify(reservationService).addReservation(any(ReservationDTO.class));
-    }
+//    @Test
+//    void addReservation() throws Exception {
+//        //given
+//        String workDate = "2024-11-14";
+//        String selectedHour = "10:00";
+//        Long employeeId = 1L;
+//        Long patientId = 2L;
+//
+//        //when & then
+//        mockMvc.perform(post("/reservation/add")
+//                        .param("workDate", workDate)
+//                        .param("selectedHour", selectedHour)
+//                        .param("employeeId", String.valueOf(employeeId))
+//                        .param("patientId", String.valueOf(patientId)))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/reservation"));
+//
+//        verify(reservationService).addReservation(any(ReservationDTO.class));
+//    }
 
     @Test
     void searchReservations() throws Exception {

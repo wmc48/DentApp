@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,18 +50,30 @@ public class ReservationService {
         );
     }
 
-    public void addReservation(ReservationDTO reservationDTO) {
-        //pobieranie encji EmployeeEntity i PatientEntity na podstawie ich ID
-        EmployeeEntity employee = employeeRepository.findById(reservationDTO.getEmployeeId())
-                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono pracownika o ID: " + reservationDTO.getEmployeeId()));
-        PatientEntity patient = patientRepository.findById(reservationDTO.getPatientId())
-                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono pacjenta o ID: " + reservationDTO.getPatientId()));
+    public void addReservation(String workDate, String selectedHour, Long employeeId, Long patientId) {
+        List<ReservationEntity> futureReservations = reservationRepository.findFutureReservationsByPatient(
+                patientId,
+                LocalDateTime.now()
+        );
+        //bład jeśliużytkownik próbuje dodać wizyte chociaż od date.now ma już dodana
+        //czyli uż może mieć zaplanowaną w przó tylko jedną wizyte
+        if (!futureReservations.isEmpty()) {
+            throw new IllegalStateException("Pacjent ma już zaplanowaną wizytę");
+        }
 
+        //połączenie daty i godziny
+        String dateTimeString = workDate + "T" + selectedHour; // tworzenie formatu ISO 8601
+
+        LocalDateTime dateAndTime = LocalDateTime.parse(dateTimeString);
+        EmployeeEntity employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono pracownika o ID: " + employeeId));
+        PatientEntity patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new IllegalArgumentException("Nie znaleziono pacjenta o ID: " + patientId));
 
         ReservationEntity reservation = ReservationEntity.builder()
                 .employee(employee)
                 .patient(patient)
-                .dateAndTime(reservationDTO.getDateAndTime())
+                .dateAndTime(dateAndTime)
                 .confirmed(false)
                 .build();
 

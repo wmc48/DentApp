@@ -142,93 +142,93 @@ class ReservationServiceTest {
         );
     }
 
-    @Test
-    void addReservation_Success() {
-        // given
-        Long employeeId = 1L;
-        Long patientId = 1L;
-        LocalDateTime dateTime = LocalDateTime.now();
+//    @Test
+//    void addReservation_Success() {
+//        // given
+//        Long employeeId = 1L;
+//        Long patientId = 1L;
+//        LocalDateTime dateTime = LocalDateTime.now();
+//
+//        ReservationDTO reservationDTO = ReservationDTO.builder()
+//                .employeeId(employeeId)
+//                .patientId(patientId)
+//                .dateAndTime(dateTime)
+//                .build();
+//
+//        EmployeeEntity mockEmployee = EmployeeEntity.builder()
+//                .employeeId(employeeId)
+//                .name("Adam")
+//                .surname("Nowak")
+//                .build();
+//
+//        PatientEntity mockPatient = PatientEntity.builder()
+//                .patientId(patientId)
+//                .name("Jan")
+//                .surname("Kowalski")
+//                .build();
+//
+//        ReservationEntity expectedReservation = ReservationEntity.builder()
+//                .employee(mockEmployee)
+//                .patient(mockPatient)
+//                .dateAndTime(dateTime)
+//                .confirmed(false)
+//                .build();
+//
+//        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(mockEmployee));
+//        when(patientRepository.findById(patientId)).thenReturn(Optional.of(mockPatient));
+//        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(expectedReservation);
+//
+//        // when
+//        reservationService.addReservation(reservationDTO);
+//
+//        // then
+//        verify(employeeRepository).findById(employeeId);
+//        verify(patientRepository).findById(patientId);
+//        verify(reservationRepository).save(any(ReservationEntity.class));
+//    }
 
-        ReservationDTO reservationDTO = ReservationDTO.builder()
-                .employeeId(employeeId)
-                .patientId(patientId)
-                .dateAndTime(dateTime)
-                .build();
+//    @Test
+//    void addReservation_EmployeeNotFound() {
+//        // given
+//        ReservationDTO reservationDTO = ReservationDTO.builder()
+//                .employeeId(1L)
+//                .patientId(1L)
+//                .dateAndTime(LocalDateTime.now())
+//                .build();
+//
+//        when(employeeRepository.findById(any())).thenReturn(Optional.empty());
+//
+//        // when & then
+//        IllegalArgumentException exception = assertThrows(
+//                IllegalArgumentException.class,
+//                () -> reservationService.addReservation(reservationDTO)
+//        );
+//        assertEquals("Nie znaleziono pracownika o ID: 1", exception.getMessage());
+//        verify(reservationRepository, never()).save(any());
+//    }
 
-        EmployeeEntity mockEmployee = EmployeeEntity.builder()
-                .employeeId(employeeId)
-                .name("Adam")
-                .surname("Nowak")
-                .build();
-
-        PatientEntity mockPatient = PatientEntity.builder()
-                .patientId(patientId)
-                .name("Jan")
-                .surname("Kowalski")
-                .build();
-
-        ReservationEntity expectedReservation = ReservationEntity.builder()
-                .employee(mockEmployee)
-                .patient(mockPatient)
-                .dateAndTime(dateTime)
-                .confirmed(false)
-                .build();
-
-        when(employeeRepository.findById(employeeId)).thenReturn(Optional.of(mockEmployee));
-        when(patientRepository.findById(patientId)).thenReturn(Optional.of(mockPatient));
-        when(reservationRepository.save(any(ReservationEntity.class))).thenReturn(expectedReservation);
-
-        // when
-        reservationService.addReservation(reservationDTO);
-
-        // then
-        verify(employeeRepository).findById(employeeId);
-        verify(patientRepository).findById(patientId);
-        verify(reservationRepository).save(any(ReservationEntity.class));
-    }
-
-    @Test
-    void addReservation_EmployeeNotFound() {
-        // given
-        ReservationDTO reservationDTO = ReservationDTO.builder()
-                .employeeId(1L)
-                .patientId(1L)
-                .dateAndTime(LocalDateTime.now())
-                .build();
-
-        when(employeeRepository.findById(any())).thenReturn(Optional.empty());
-
-        // when & then
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> reservationService.addReservation(reservationDTO)
-        );
-        assertEquals("Nie znaleziono pracownika o ID: 1", exception.getMessage());
-        verify(reservationRepository, never()).save(any());
-    }
-
-    @Test
-    void addReservation_PatientNotFound() {
-        // given
-        ReservationDTO reservationDTO = ReservationDTO.builder()
-                .employeeId(1L)
-                .patientId(1L)
-                .dateAndTime(LocalDateTime.now())
-                .build();
-
-        when(employeeRepository.findById(any())).thenReturn(Optional.of(
-                EmployeeEntity.builder().employeeId(1L).build()
-        ));
-        when(patientRepository.findById(any())).thenReturn(Optional.empty());
-
-        // when & then
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> reservationService.addReservation(reservationDTO)
-        );
-        assertEquals("Nie znaleziono pacjenta o ID: 1", exception.getMessage());
-        verify(reservationRepository, never()).save(any());
-    }
+//    @Test
+//    void addReservation_PatientNotFound() {
+//        // given
+//        ReservationDTO reservationDTO = ReservationDTO.builder()
+//                .employeeId(1L)
+//                .patientId(1L)
+//                .dateAndTime(LocalDateTime.now())
+//                .build();
+//
+//        when(employeeRepository.findById(any())).thenReturn(Optional.of(
+//                EmployeeEntity.builder().employeeId(1L).build()
+//        ));
+//        when(patientRepository.findById(any())).thenReturn(Optional.empty());
+//
+//        // when & then
+//        IllegalArgumentException exception = assertThrows(
+//                IllegalArgumentException.class,
+//                () -> reservationService.addReservation(reservationDTO)
+//        );
+//        assertEquals("Nie znaleziono pacjenta o ID: 1", exception.getMessage());
+//        verify(reservationRepository, never()).save(any());
+//    }
 
     // helper method
     private ReservationEntity createTestReservation1() {

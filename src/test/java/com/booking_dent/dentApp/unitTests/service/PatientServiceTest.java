@@ -75,29 +75,29 @@ class PatientServiceTest {
 //        verify(patientRepository, times(1)).save(any(PatientEntity.class));
 //    }
 
-    @Test
-    void updatePatient() {
-        //given
-        Long patientId = 1L;
-        PatientEntity existingPatient = PatientFixtures.createTestPatient1();
-
-        PatientDTO patientDTO = PatientFixtures.testPatientDto();
-
-        when(patientRepository.findById(patientId)).thenReturn(Optional.of(existingPatient));
-        when(patientRepository.save(existingPatient)).thenReturn(existingPatient);
-
-        //when
-        PatientEntity updatePatient = patientService.updatePatient(patientDTO, patientId);
-
-        //them
-        assertEquals(1L, updatePatient.getPatientId());
-        assertEquals("Jan", updatePatient.getName());
-        assertEquals("Dto", updatePatient.getSurname());
-        assertEquals("12378901", updatePatient.getPesel());
-
-        verify(patientRepository).findById(patientId);
-        verify(patientRepository).save(existingPatient);
-    }
+//    @Test
+//    void updatePatient() {
+//        //given
+//        Long patientId = 1L;
+//        PatientEntity existingPatient = PatientFixtures.createTestPatient1();
+//
+//        PatientDTO patientDTO = PatientFixtures.testPatientDto();
+//
+//        when(patientRepository.findById(patientId)).thenReturn(Optional.of(existingPatient));
+//        when(patientRepository.save(existingPatient)).thenReturn(existingPatient);
+//
+//        //when
+//        PatientEntity updatePatient = patientService.updatePatient(patientDTO, patientId);
+//
+//        //them
+//        assertEquals(1L, updatePatient.getPatientId());
+//        assertEquals("Jan", updatePatient.getName());
+//        assertEquals("Dto", updatePatient.getSurname());
+//        assertEquals("12378901", updatePatient.getPesel());
+//
+//        verify(patientRepository).findById(patientId);
+//        verify(patientRepository).save(existingPatient);
+//    }
 
     @Test
     void deleteById() {

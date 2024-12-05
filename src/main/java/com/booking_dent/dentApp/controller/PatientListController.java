@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -55,9 +55,10 @@ public class PatientListController {
 
     @PutMapping("/update/{patientId}")
     public String updatePatient(@PathVariable Long patientId,
-                                @ModelAttribute("patient") PatientDTO patientDTO
+                                @ModelAttribute("patient") PatientDTO patientDTO,
+                                Principal principal
     ){
-        patientService.updatePatient(patientDTO,patientId);
+        patientService.updatePatient(patientDTO, patientId, principal);
         return "redirect:/staffView/patients/show/" + patientId;
     }
 

@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     public final UserRepository userRepository;
-    public final PatientService patientService;
     public final PatientRepository patientRepository;
     private final PasswordEncoder passwordEncoder;
 
