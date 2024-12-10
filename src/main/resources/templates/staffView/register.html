@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja użytkownika</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav th:replace="~{navbarLogout :: navbar}"></nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Formularz Rejestracji</h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/staffView/register/create}" method="POST" th:object="${accountDTO}">
+                        <!-- username -->
+                        <div class="mb-3">
+                            <label class="form-label">Rola</label>
+                            <select class="form-select" th:field="*{userDTO.roleId}" name="roleId" required>
+                                <option value="" disabled selected>Wybierz rolę</option>
+                                <option value="3">LEKARZ</option>
+                                <option value="2">PERSONEL</option>
+                                <option value="1">ADMIN</option>
+                            </select>
+
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nazwa użytkownika</label>
+                            <input type="text" class="form-control" th:field="*{userDTO.username}" name="username"
+                                   placeholder="Wprowadź nazwę użytkownika" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hasło</label>
+                            <input type="password" class="form-control" th:field="*{userDTO.password}" name="password"
+                                   placeholder="Wprowadź hasło" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Imię</label>
+                            <input type="text" class="form-control" th:field="*{employeeDTO.name}" name="name"
+                                   placeholder="Wprowadź imię" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nazwisko</label>
+                            <input type="text" class="form-control" th:field="*{employeeDTO.surname}" name="surname"
+                                   placeholder="Wprowadź nazwisko" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Numer telefonu</label>
+                            <input type="text" class="form-control" th:field="*{employeeDTO.phone}" name="phone"
+                                   placeholder="Wprowadź numer telefonu"
+                                   title="Numer telefonu musi składać się z 9 cyfr" required>
+                            <!--                            pattern="\d{9}"-->
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">E-mail</label>
+                            <input type="text" class="form-control" th:field="*{employeeDTO.email}" name="email"
+                                   placeholder="Wprowadź adres e-mail" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Zarejestruj</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <small>Masz już konto? <a href="/login" class="text-primary">Zaloguj się</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -55,20 +55,20 @@ class EmployeeControllerTest {
                 .andExpect(model().attribute("employees", employees)); //czy atrybut employees w modelu zawiera oczekiwaną listę pracowników
     }
 
-    @Test
-    void addEmployee() throws Exception {
-        //given
-        EmployeeDTO employeeDTO = EmployeeFixtures.testEmployeeDto();
-
-        // when & then
-        //tworzymy przykładowy obiekt EmployeeDTO i przekazujemy go do kontrolera za pomocą flashAttr()
-        //symuluje przesłania formularza POST
-        mockMvc.perform(post("/employee/add").flashAttr("employeeDTO", employeeDTO))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/employee"));
-        //czy metoda została wywołana z odpowiednimi argumentami
-        verify(employeeService, times(1)).addEmployee(employeeDTO);
-    }
+//    @Test
+//    void addEmployee() throws Exception {
+//        //given
+//        EmployeeDTO employeeDTO = EmployeeFixtures.testEmployeeDto();
+//
+//        // when & then
+//        //tworzymy przykładowy obiekt EmployeeDTO i przekazujemy go do kontrolera za pomocą flashAttr()
+//        //symuluje przesłania formularza POST
+//        mockMvc.perform(post("/employee/add").flashAttr("employeeDTO", employeeDTO))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(view().name("redirect:/employee"));
+//        //czy metoda została wywołana z odpowiednimi argumentami
+//        verify(employeeService, times(1)).addEmployee(employeeDTO);
+//    }
 
     @Test
     void updateEmployee() throws Exception {

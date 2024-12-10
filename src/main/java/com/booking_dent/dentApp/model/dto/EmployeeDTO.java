@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class EmployeeDTO {
 
     private Long employeeId;
+    private Long userId;
     private String name;
     private String surname;
     private String email;

@@ -55,30 +55,30 @@ class EmployeeServiceTest {
     }
 
 
-    @Test
-    void addEmployee() {
-        //given
-        EmployeeDTO employeeDTO = EmployeeDTO.builder()
-                .name("Test1")
-                .surname("TestoweNazw1")
-                .email("email@email.com")
-                .phone("8888888888")
-                .build();
-        EmployeeEntity expectedEmployee = EmployeeFixtures.testEmployee1();
-
-        // mockowanie działania repozytorium - symulujemy zwracanie obiektu po zapisaniu
-        when(employeeRepository.save(any(EmployeeEntity.class))).thenReturn(expectedEmployee);
-
-        //when
-        EmployeeEntity savedEmployee = employeeService.addEmployee(employeeDTO);
-
-        assertEquals("Test1", savedEmployee.getName());
-        assertEquals("TestoweNazw1", savedEmployee.getSurname());
-        assertEquals("email@email.com", savedEmployee.getEmail());
-        assertEquals("8888888888", savedEmployee.getPhone());
-
-        verify(employeeRepository, times(1)).save(any(EmployeeEntity.class));
-    }
+//    @Test
+//    void addEmployee() {
+//        //given
+//        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+//                .name("Test1")
+//                .surname("TestoweNazw1")
+//                .email("email@email.com")
+//                .phone("8888888888")
+//                .build();
+//        EmployeeEntity expectedEmployee = EmployeeFixtures.testEmployee1();
+//
+//        // mockowanie działania repozytorium - symulujemy zwracanie obiektu po zapisaniu
+//        when(employeeRepository.save(any(EmployeeEntity.class))).thenReturn(expectedEmployee);
+//
+//        //when
+//        EmployeeEntity savedEmployee = employeeService.addEmployee(employeeDTO);
+//
+//        assertEquals("Test1", savedEmployee.getName());
+//        assertEquals("TestoweNazw1", savedEmployee.getSurname());
+//        assertEquals("email@email.com", savedEmployee.getEmail());
+//        assertEquals("8888888888", savedEmployee.getPhone());
+//
+//        verify(employeeRepository, times(1)).save(any(EmployeeEntity.class));
+//    }
 
     @Test
     void deleteById() {

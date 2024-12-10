@@ -31,13 +31,6 @@ public class EmployeeController {
         return "/staffView/employee";
     }
 
-
-    @PostMapping("/add")
-    public String addEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
-        employeeService.addEmployee(employeeDTO);
-        return "redirect:/staffView/employee";
-    }
-
     @DeleteMapping("/delete/{employeeId}")
     public String deleteStaff(@PathVariable("employeeId") Long employeeId) {
         employeeService.deleteById(employeeId);
@@ -69,7 +62,6 @@ public class EmployeeController {
         return "staffView/employeeDetails";
     }
 
-
     @PostMapping("/scheduleadd")
     public String saveSchedule(@RequestParam("employeeId") Long employeeId,
                                @RequestParam("workDateFrom") String workDateFromStr,
@@ -86,7 +78,6 @@ public class EmployeeController {
 
         return "redirect:/staffView/employee/show/" + employeeId;
     }
-
 
     @PutMapping("/update/{employeeId}")
     public String updateEmployee(

@@ -7,6 +7,7 @@ import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.MonthDetails;
+import com.booking_dent.dentApp.security.UserEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,14 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public EmployeeEntity addEmployee(EmployeeDTO employeeDTO) {
+    public EmployeeEntity addEmployee(EmployeeDTO employeeDTO, UserEntity userEntity) {
         EmployeeEntity newEmployee = EmployeeEntity.builder()
                 .name(employeeDTO.getName())
                 .surname(employeeDTO.getSurname())
                 .email(employeeDTO.getEmail())
                 .phone(employeeDTO.getPhone())
+                .user(userEntity)
                 .build();
-
         return employeeRepository.save(newEmployee);
     }
 
@@ -60,7 +61,6 @@ public class EmployeeService {
 
         return employeeRepository.save(employeeEntity);
     }
-
 
     //dla wyświetlania widoku danego miesiąca
     //******************************************************************************************************************

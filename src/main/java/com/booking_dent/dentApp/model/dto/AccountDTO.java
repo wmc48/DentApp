@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class AccountDTO { //utworzenie klasy aby połączyć dwa obiekty w jeden model dla thymeleaf
         private UserDTO userDTO;
         private PatientDTO patientDTO;
-
+        private EmployeeDTO employeeDTO;
 }

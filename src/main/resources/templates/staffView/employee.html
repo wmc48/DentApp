@@ -6,14 +6,9 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<!--<nav th:replace="~{navbar :: navbar}"></nav>-->
 <div class="container mt-4">
 
     <h2 class="mb-4">Obecni pracownicy</h2>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Dodaj pracownika
-    </button>
 
     <div class="employee">
     <!-- Modal -->
@@ -25,22 +20,6 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/staffView/employee/add}" method="post" th:object="${employeeDTO}">
-                        <div class="form-group">
-                            Imię: <input type="text" class="form-control" field="*{name}" name="name"><br>
-                            Nazwisko: <input type="text" class="form-control" field="*{surname}" name="surname"><br>
-                            Email: <input type="email" class="form-control" field="*{email}" name="email"><br>
-                            Nr Tel: <input type="text" class="form-control" field="*{phone}" name="phone"><br>
-                        </div>
-                        <div class="form-group">
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                                <input type="submit" class="btn btn-primary" value="Utwórz pracownika"/>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

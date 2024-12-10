@@ -1,10 +1,7 @@
 package com.booking_dent.dentApp.security;
 
-import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
-import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.model.dto.UserDTO;
-import com.booking_dent.dentApp.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -32,7 +29,7 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UserEntity createPatientAccount(UserDTO userDTO) {
+    public UserEntity createAccount(UserDTO userDTO, Integer roleId) {
         String hashedPassword = passwordEncoder.encode(userDTO.getPassword());
 
         UserEntity newUser = UserEntity.builder()
@@ -42,9 +39,7 @@ public class UserService implements UserDetailsService {
                 .build();
 
         UserEntity savedUser = userRepository.save(newUser);
-
-        //przypisanie roli dla nowo powstałego usera - (patient = 4)
-        userRepository.assignUserRole(savedUser.getUserId(), 4); // Role ID for patient
+        userRepository.assignUserRole(savedUser.getUserId(), roleId);
         return savedUser;
     }
     @Override

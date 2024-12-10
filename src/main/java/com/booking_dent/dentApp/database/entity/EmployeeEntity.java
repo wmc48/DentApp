@@ -1,5 +1,6 @@
 package com.booking_dent.dentApp.database.entity;
 
+import com.booking_dent.dentApp.security.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,9 +22,9 @@ public class EmployeeEntity {
     @Column(name = "employee_id")
     private Long employeeId;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id", unique = true, nullable = false)
-//    private UserEntity user;
+    @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
+    private UserEntity user;
 
     @Column(name = "name")
     private String name;
