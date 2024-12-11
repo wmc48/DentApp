@@ -7,6 +7,7 @@ import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.database.repository.ReservationRepository;
 import com.booking_dent.dentApp.model.dto.ReservationDTO;
+import com.booking_dent.dentApp.model.mapper.ReservationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,13 @@ public class ReservationService {
     private ReservationRepository reservationRepository; // repozytorium do rezerwacji
     private EmployeeRepository employeeRepository; // repozytorium do pracowników
     private PatientRepository patientRepository; // repozytorium do pacjentów
+    private final ReservationMapper reservationMapper;
+
+    public List<ReservationDTO> getDTOReservationsForEmployee(Long employeeId) {
+        return reservationRepository.findByEmployee_EmployeeId(employeeId).stream()
+                .map(reservationMapper::toDTO)
+                .toList();
+    }
 
     public List<ReservationEntity> getAllReservations() {
         return reservationRepository.findAll();

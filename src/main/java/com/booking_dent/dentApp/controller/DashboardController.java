@@ -21,10 +21,4 @@ public class DashboardController {
         return dashboardService.showDashboardForRole(model, principal, "patientView/dashboard");
     }
 
-    @GetMapping("/staffView/dashboard")
-    public String showMedDashboard(Model model, Principal principal) {
-        return dashboardService.showDashboardForRole(model, principal, "staffView/dashboard");
-    }
-
-
 }

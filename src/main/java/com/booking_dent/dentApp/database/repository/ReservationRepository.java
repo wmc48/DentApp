@@ -36,6 +36,7 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     );
 
     List<ReservationEntity> findByPatient_PatientId(Long patientId);
+    List<ReservationEntity> findByEmployee_EmployeeId(Long employeeId);
 
     @Query("SELECT r FROM ReservationEntity r WHERE r.patient.id = :patientId AND r.dateAndTime > :currentDateTime")
     List<ReservationEntity> findFutureReservationsByPatient(

@@ -33,7 +33,7 @@ public class ReservationByPatientController {
 
 
     @GetMapping
-    public String showDashboard(Model model, Principal principal) {
+    public String showDashboardReservation(Model model, Principal principal) {
         //pobierz nazwę użytkownika aktualnie zalogowanego użytkownika i na jej podstawie znajdź id pacjenta
         Long patientId = patientService.getPatientIdByUsername(principal.getName());
 

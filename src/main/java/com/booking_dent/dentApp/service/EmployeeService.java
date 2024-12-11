@@ -7,7 +7,9 @@ import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.MonthDetails;
+import com.booking_dent.dentApp.model.mapper.EmployeeMapper;
 import com.booking_dent.dentApp.security.UserEntity;
+import com.booking_dent.dentApp.security.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +24,29 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final ShiftRepository shiftRepository;
+    private final UserRepository userRepository;
+    private final EmployeeMapper employeeMapper;
 
     public List<EmployeeEntity> getAllEmployees() {
         return employeeRepository.findAll();
+    }
+
+    public EmployeeDTO getEmployeeDTO(Long employeeId) {
+        return employeeRepository.findById(employeeId)
+                .map(employeeMapper::toDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+    }
+
+    public Long getEmployeeIdByUsername(String username) {
+
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        //pobierz identyfikator pacjenta na podstawie nazwy użytkownika
+        EmployeeEntity employee = employeeRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+
+        return employee.getEmployeeId();
     }
 
     public EmployeeEntity addEmployee(EmployeeDTO employeeDTO, UserEntity userEntity) {
