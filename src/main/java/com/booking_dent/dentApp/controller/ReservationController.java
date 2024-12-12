@@ -2,9 +2,9 @@ package com.booking_dent.dentApp.controller;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.ReservationEntity;
-import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.model.dto.ReservationDTO;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
+import com.booking_dent.dentApp.model.dto.ShiftDTO;
 import com.booking_dent.dentApp.security.UserService;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ReservationService;
@@ -46,7 +46,7 @@ public class ReservationController {
     ) {
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
         Page<ScheduleDTO> schedulesPage = scheduleService.getAvailableSchedules(employeeId, page);
-        List<ShiftEntity> allShifts = employeeService.getAllShifts();
+        List<ShiftDTO> allShifts = employeeService.getAllShifts();
 
         model.addAttribute("employee", employeeEntity);
         model.addAttribute("schedules", schedulesPage.getContent());

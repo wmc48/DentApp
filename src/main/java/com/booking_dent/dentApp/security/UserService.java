@@ -1,7 +1,7 @@
 package com.booking_dent.dentApp.security;
 
-import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.UserDTO;
+import com.booking_dent.dentApp.model.mapper.UserMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    public final UserRepository userRepository;
-    public final PatientRepository patientRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
     @Transactional
     public UserEntity createAccount(UserDTO userDTO, Integer roleId) {
@@ -42,6 +42,13 @@ public class UserService implements UserDetailsService {
         userRepository.assignUserRole(savedUser.getUserId(), roleId);
         return savedUser;
     }
+
+    public UserDTO getUserDTObyUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userMapper::toDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username)

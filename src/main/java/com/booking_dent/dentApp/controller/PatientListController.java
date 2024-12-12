@@ -1,7 +1,6 @@
 package com.booking_dent.dentApp.controller;
 
-import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.PatientEntity;
+import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.PatientService;
@@ -9,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -22,14 +22,14 @@ public class PatientListController {
 
     @GetMapping
     public String showPatientList(Model model){
-        List<PatientEntity> patients = patientService.getAllPatient();
+        List<PatientDTO> patients = patientService.getAllPatient();
         model.addAttribute("patients", patients);
         return "staffView/patients";
     }
 
     @GetMapping("/search")
     public String searchPatients(@ModelAttribute PatientDTO patientDTO, Model model) {
-        List<PatientEntity> patients = patientService.searchPatients(patientDTO);
+        List<PatientDTO> patients = patientService.searchPatients(patientDTO);
         model.addAttribute("patients", patients);
 
         //dodanie atrybutów do medelu, aby po wyszukiwaniu atrybuty dalej były widoczne w formularzu
@@ -46,8 +46,8 @@ public class PatientListController {
             @PathVariable Long patientId,
             Model model
     ){
-        PatientEntity patient = patientService.findPatientById(patientId);
-        List<EmployeeEntity> employees = employeeService.getAllEmployees();
+        PatientDTO patient = patientService.findPatientById(patientId);
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
         model.addAttribute("patient", patient);
         model.addAttribute("employees", employees);
         return "patientDetails";

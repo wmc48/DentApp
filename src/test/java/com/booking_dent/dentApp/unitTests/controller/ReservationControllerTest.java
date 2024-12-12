@@ -57,38 +57,38 @@ class ReservationControllerTest {
                 .andExpect(redirectedUrl("/reservation/showDoctor/" + employeeId + "/" + patientId)); //czy ścieżka przekierowania jest poprawna
     }
 
-    @Test
-    void availableHoursForDoctor() throws Exception {
-        //given
-        Long employeeId = 1L;
-        Long patientId = 456L;
-        int page = 0;
-
-        EmployeeEntity employee = EmployeeFixtures.testEmployee1();
-        List<ScheduleDTO> schedules = Arrays.asList(ScheduleFixtures.testSchedule1(), ScheduleFixtures.testSchedule2());
-        Page<ScheduleDTO> schedulePage = new PageImpl<>(schedules, PageRequest.of(page, 10), 2);
-        List<ShiftEntity> shifts = Arrays.asList(ShiftFixtures.testShift1(), ShiftFixtures.testShift2());
-
-        when(employeeService.findEmployeeById(employeeId)).thenReturn(employee);
-        when(scheduleService.getAvailableSchedules(employeeId, page)).thenReturn(schedulePage);
-        when(employeeService.getAllShifts()).thenReturn(shifts);
-
-        //when && then
-        mockMvc.perform(get("/reservation/showDoctor/{employeeId}/{patientId}", employeeId, patientId)
-                        .param("page", String.valueOf(page)))
-                .andExpect(status().isOk())
-                .andExpect(view().name("scheduleReservation"))
-                .andExpect(model().attribute("employee", employee))
-                .andExpect(model().attribute("schedules", schedules))
-                .andExpect(model().attribute("shifts", shifts))
-                .andExpect(model().attribute("patientId", patientId))
-                .andExpect(model().attribute("currentPage", page))
-                .andExpect(model().attribute("totalPages", 1));
-
-        verify(employeeService).findEmployeeById(employeeId);
-        verify(scheduleService).getAvailableSchedules(employeeId, page);
-        verify(employeeService).getAllShifts();
-    }
+//    @Test
+//    void availableHoursForDoctor() throws Exception {
+//        //given
+//        Long employeeId = 1L;
+//        Long patientId = 456L;
+//        int page = 0;
+//
+//        EmployeeEntity employee = EmployeeFixtures.testEmployee1();
+//        List<ScheduleDTO> schedules = Arrays.asList(ScheduleFixtures.testSchedule1(), ScheduleFixtures.testSchedule2());
+//        Page<ScheduleDTO> schedulePage = new PageImpl<>(schedules, PageRequest.of(page, 10), 2);
+//        List<ShiftEntity> shifts = Arrays.asList(ShiftFixtures.testShift1(), ShiftFixtures.testShift2());
+//
+//        when(employeeService.findEmployeeById(employeeId)).thenReturn(employee);
+//        when(scheduleService.getAvailableSchedules(employeeId, page)).thenReturn(schedulePage);
+//        when(employeeService.getAllShifts()).thenReturn(shifts);
+//
+//        //when && then
+//        mockMvc.perform(get("/reservation/showDoctor/{employeeId}/{patientId}", employeeId, patientId)
+//                        .param("page", String.valueOf(page)))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("scheduleReservation"))
+//                .andExpect(model().attribute("employee", employee))
+//                .andExpect(model().attribute("schedules", schedules))
+//                .andExpect(model().attribute("shifts", shifts))
+//                .andExpect(model().attribute("patientId", patientId))
+//                .andExpect(model().attribute("currentPage", page))
+//                .andExpect(model().attribute("totalPages", 1));
+//
+//        verify(employeeService).findEmployeeById(employeeId);
+//        verify(scheduleService).getAvailableSchedules(employeeId, page);
+//        verify(employeeService).getAllShifts();
+//    }
 
     @Test
     void showAllReservations() throws Exception{

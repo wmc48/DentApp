@@ -2,15 +2,14 @@ package com.booking_dent.dentApp.controller;
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
 import com.booking_dent.dentApp.database.entity.ReservationEntity;
-import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.database.repository.ReservationRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
+import com.booking_dent.dentApp.model.dto.ShiftDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.PatientService;
 import com.booking_dent.dentApp.service.ReservationService;
 import com.booking_dent.dentApp.service.ScheduleService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -38,7 +37,7 @@ public class ReservationByPatientController {
         Long patientId = patientService.getPatientIdByUsername(principal.getName());
 
         List<ReservationEntity> reservations = reservationRepository.findByPatient_PatientId(patientId);
-        List<EmployeeEntity> employees = employeeService.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
 
         model.addAttribute("reservations", reservations);
         model.addAttribute("employees", employees);
@@ -64,7 +63,7 @@ public class ReservationByPatientController {
 
         EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
         Page<ScheduleDTO> schedulesPage = scheduleService.getAvailableSchedules(employeeId, page);
-        List<ShiftEntity> allShifts = employeeService.getAllShifts();
+        List<ShiftDTO> allShifts = employeeService.getAllShifts();
 
         model.addAttribute("employee", employeeEntity);
         model.addAttribute("schedules", schedulesPage.getContent());

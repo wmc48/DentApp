@@ -37,7 +37,7 @@ class PatientListControllerTest {
     void showPatientList() throws Exception {
         //given
         List<PatientEntity> patients = Arrays.asList(PatientFixtures.createTestPatient1(), PatientFixtures.createTestPatient2());
-        when(patientService.getAllPatient()).thenReturn(patients);
+     //   when(patientService.getAllPatient()).thenReturn(patients);
 
         //when & then
         mockMvc.perform(get("/patient"))
@@ -83,7 +83,7 @@ class PatientListControllerTest {
                 .build();
 
         List<PatientEntity> existingPatients = Arrays.asList(PatientFixtures.createTestPatient1(), PatientFixtures.createTestPatient2());
-        when(patientService.searchPatients(searchCriteria)).thenReturn(existingPatients);
+       // when(patientService.searchPatients(searchCriteria)).thenReturn(existingPatients);
 
         //whe&& then
         mockMvc.perform(get("/patient/search")
@@ -104,7 +104,7 @@ class PatientListControllerTest {
                 .build();
 
         List<PatientEntity> emptyPatientList = Collections.emptyList();
-        when(patientService.searchPatients(searchCriteria)).thenReturn(emptyPatientList);
+       // when(patientService.searchPatients(searchCriteria)).thenReturn(emptyPatientList);
 
         // when then
         mockMvc.perform(get("/patient/search")

@@ -1,10 +1,10 @@
 package com.booking_dent.dentApp.controller;
 
-import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
-import com.booking_dent.dentApp.security.UserEntity;
+import com.booking_dent.dentApp.model.dto.UserDTO;
 import com.booking_dent.dentApp.security.UserRepository;
+import com.booking_dent.dentApp.security.UserService;
 import com.booking_dent.dentApp.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -26,30 +26,18 @@ public class PatientDetailsController {
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
     private final PatientService patientService;
+    private final UserService userService;
 
     @GetMapping
     public String showDashboard(Model model, Principal principal) {
-        //pobierz nazwę użytkownika zalogowanego użytkownika
-        String username = principal.getName();
 
-        //znajdź użytkownika w bazie danych
-        UserEntity user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        //szukamy i pobieramy usera jako dto po username
+        UserDTO user = userService.getUserDTObyUsername(principal.getName());
+        //szukamy i pobieramy patienta jako dto po username
+        PatientDTO patient = patientService.getPatientDTObyUsername(principal.getName());
 
-        //znajdź pacjenta powiązanego z użytkownikiem
-        PatientEntity patient = patientRepository.findByUser(user)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
-
-        PatientDTO patientDTO = patientService.toPatientDTO(patient);//aby podstawiły się uzupełnione pola w form edit
-
-        model.addAttribute("userId", user.getUserId());
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("email", patient.getEmail());
-        model.addAttribute("patientName", patient.getName());
-        model.addAttribute("patientSurname", patient.getSurname());
-        model.addAttribute("pesel", patient.getPesel());
-        model.addAttribute("phone", patient.getPhone());
-        model.addAttribute("patientDTO", patientDTO);
+        model.addAttribute("patientDTO", patient);
+        model.addAttribute("userDTO", user);
         return "patientView/patientDetails";
     }
 

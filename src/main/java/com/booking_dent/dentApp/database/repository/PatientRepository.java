@@ -24,8 +24,6 @@ public interface PatientRepository extends JpaRepository<PatientEntity, Long> {
     @Override
     @Query("SELECT p FROM PatientEntity p ORDER BY p.surname ASC") // Sortowanie rosnące według nazwiska
     List<PatientEntity> findAll();
-
     Optional<PatientEntity> findByUser(UserEntity user);
-
 }
 

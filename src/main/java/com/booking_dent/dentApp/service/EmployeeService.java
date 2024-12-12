@@ -2,12 +2,13 @@ package com.booking_dent.dentApp.service;
 
 
 import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.database.repository.EmployeeRepository;
 import com.booking_dent.dentApp.database.repository.ShiftRepository;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.MonthDetails;
+import com.booking_dent.dentApp.model.dto.ShiftDTO;
 import com.booking_dent.dentApp.model.mapper.EmployeeMapper;
+import com.booking_dent.dentApp.model.mapper.ShiftMapper;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,12 +27,13 @@ public class EmployeeService {
     private final ShiftRepository shiftRepository;
     private final UserRepository userRepository;
     private final EmployeeMapper employeeMapper;
+    private final ShiftMapper shiftMapper;
 
-    public List<EmployeeEntity> getAllEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getAllEmployees() {
+        return employeeRepository.findAll().stream().map(employeeMapper::toDTO).toList();
     }
 
-    public EmployeeDTO getEmployeeDTO(Long employeeId) {
+    public EmployeeDTO getEmployeeDTObyId(Long employeeId) {
         return employeeRepository.findById(employeeId)
                 .map(employeeMapper::toDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
@@ -69,9 +71,13 @@ public class EmployeeService {
                 .orElseThrow(() -> new EntityNotFoundException("Employee not found, employeeId: " + employeeId));
     }
 
-    public List<ShiftEntity> getAllShifts() {
-        return shiftRepository.findAll();
+    public List<ShiftDTO> getAllShifts() {
+        return shiftRepository.findAll().stream().map(shiftMapper::toDTO).toList();
     }
+
+//    public List<EmployeeDTO> getAllEmployees() {
+//        return employeeRepository.findAll().stream().map(employeeMapper::toDTO).toList();
+//    }
 
     public EmployeeEntity updateEmployee(EmployeeDTO employeeDTO, Long employeeId) {
         EmployeeEntity employeeEntity = findEmployeeById(employeeId);

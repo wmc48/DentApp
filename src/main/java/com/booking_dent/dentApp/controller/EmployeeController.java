@@ -1,10 +1,9 @@
 package com.booking_dent.dentApp.controller;
 
-import com.booking_dent.dentApp.database.entity.EmployeeEntity;
-import com.booking_dent.dentApp.database.entity.ShiftEntity;
 import com.booking_dent.dentApp.model.dto.EmployeeDTO;
 import com.booking_dent.dentApp.model.dto.MonthDetails;
 import com.booking_dent.dentApp.model.dto.ScheduleDTO;
+import com.booking_dent.dentApp.model.dto.ShiftDTO;
 import com.booking_dent.dentApp.service.EmployeeService;
 import com.booking_dent.dentApp.service.ReservationService;
 import com.booking_dent.dentApp.service.ScheduleService;
@@ -32,13 +31,13 @@ public class EmployeeController {
         Long employeeId = employeeService.getEmployeeIdByUsername(principal.getName());
 
         model.addAttribute("reservations", reservationService.getDTOReservationsForEmployee(employeeId));
-        model.addAttribute("employee", employeeService.getEmployeeDTO(employeeId));
+        model.addAttribute("employee", employeeService.getEmployeeDTObyId(employeeId));
         return "/staffView/dashboard";
     }
 
     @GetMapping("/staffView/employee")
     public String showEmployeesList(Model model) {
-        List<EmployeeEntity> employees = employeeService.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
         model.addAttribute("employees", employees);
         return "/staffView/employee";
     }
@@ -55,16 +54,16 @@ public class EmployeeController {
             @RequestParam(value = "month", required = false) String monthParam,
             Model model
     ) {
-        EmployeeEntity employeeEntity = employeeService.findEmployeeById(employeeId);
+        EmployeeDTO employee = employeeService.getEmployeeDTObyId(employeeId);
 
         //dla wyświetlania widoku danego miesiąca
         MonthDetails monthDetails = employeeService.getMonthDetails(monthParam);
 
         List<ScheduleDTO> schedules = scheduleService.getEmployeeSchedulesForMonth(employeeId, monthDetails.getCurrentMonth());
-        List<ShiftEntity> allShifts = employeeService.getAllShifts();
+        List<ShiftDTO> allShifts = employeeService.getAllShifts();
 
         // przekazanie pracownika, grafiku i zmian do modelu
-        model.addAttribute("employee", employeeEntity);
+        model.addAttribute("employee", employee);
         model.addAttribute("schedules", schedules);
         model.addAttribute("shifts", allShifts);
         model.addAttribute("previousMonth", monthDetails.getPreviousMonth().getYear() + "-" + String.format("%02d", monthDetails.getPreviousMonth().getMonthValue()));

@@ -3,6 +3,7 @@ package com.booking_dent.dentApp.service;
 import com.booking_dent.dentApp.database.entity.PatientEntity;
 import com.booking_dent.dentApp.database.repository.PatientRepository;
 import com.booking_dent.dentApp.model.dto.PatientDTO;
+import com.booking_dent.dentApp.model.mapper.PatientMapper;
 import com.booking_dent.dentApp.security.UserEntity;
 import com.booking_dent.dentApp.security.UserRepository;
 import com.booking_dent.dentApp.security.UserService;
@@ -21,6 +22,7 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final PatientMapper patientMapper;
 
     @Transactional
     public PatientEntity addPatient(PatientDTO patientDTO, UserEntity userEntity) {
@@ -35,23 +37,29 @@ public class PatientService {
         return patientRepository.save(newPatient);
     }
 
-    public List<PatientEntity> getAllPatient() {
-        return patientRepository.findAll();
+    public List<PatientDTO> getAllPatient() {
+        return patientRepository.findAll().stream().map(patientMapper::toDTO).toList();
     }
 
-    public List<PatientEntity> searchPatients(PatientDTO patientDTO) {
-        return patientRepository.searchPatients(
+    public List<PatientDTO> searchPatients(PatientDTO patientDTO) {
+        List<PatientEntity> patientEntities = patientRepository.searchPatients(
                 patientDTO.getName(),
                 patientDTO.getSurname(),
                 patientDTO.getPesel(),
                 patientDTO.getPhone()
         );
+
+        return patientEntities.stream()
+                .map(patientMapper::toDTO)
+                .toList();
     }
 
-    public PatientEntity findPatientById(Long patientId){
-        return patientRepository.findById(patientId)
+
+    public PatientDTO findPatientById(Long patientId) {
+        return patientRepository.findById(patientId).map(patientMapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException("patient not found, patientId: " + patientId));
     }
+
 
     public void deleteById(Long patientId) {
         patientRepository.deleteById(patientId);
@@ -59,7 +67,9 @@ public class PatientService {
 
     @Transactional
     public PatientEntity updatePatient(PatientDTO patientDTO, Long patientId, Principal principal) {
-        PatientEntity patientEntity = findPatientById(patientId);
+        PatientEntity patientEntity = patientRepository.findById(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("patient not found, patientId: " + patientId));
+        ;
 
         if (userService.checkRole(principal, "patient")) {
             patientEntity.setEmail(patientDTO.getEmail());
@@ -87,13 +97,15 @@ public class PatientService {
         return patient.getPatientId();
     }
 
-    public PatientDTO toPatientDTO(PatientEntity patient) {
-        return PatientDTO.builder()
-                .email(patient.getEmail())
-                .phone(patient.getPhone())
-                .name(patient.getName())
-                .surname(patient.getSurname())
-                .pesel(patient.getPesel())
-                .build();
+
+    public PatientDTO getPatientDTObyUsername(String username) {
+        // Najpierw znajdź UserEntity po userId
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        // Następnie znajdź pacjenta powiązanego z tym użytkownikiem
+        return patientRepository.findByUser(user)
+                .map(patientMapper::toDTO)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
     }
 }

@@ -27,20 +27,20 @@
                     </div>
                     <h2>Szczegóły konta</h2>
                     <p>
-                        <strong>User ID:</strong> <span th:text="${userId}"></span>
+                        <strong>User ID:</strong> <span th:text="${userDTO.userId}"></span>
                     </p>
                     <p>
-                        <strong>Username:</strong> <span th:text="${username}"></span>
+                        <strong>Username:</strong> <span th:text="${userDTO.username}"></span>
                     </p>
                     <p>
-                        <strong>Email:</strong> <span th:text="${email}"></span>
+                        <strong>Email:</strong> <span th:text="${patientDTO.email}"></span>
                     </p>
                     <h2 class="mt-4">Dane pacjenta</h2>
                     <p>
-                        <strong>Imię:</strong> <span th:text="${patientName}"></span>
+                        <strong>Imię:</strong> <span th:text="${patientDTO.name}"></span>
                     </p>
                     <p>
-                        <strong>Nazwisko:</strong> <span th:text="${patientSurname}"></span>
+                        <strong>Nazwisko:</strong> <span th:text="${patientDTO.surname}"></span>
                     </p>
                     <p>
                         <strong>PESEL:</strong>
@@ -51,10 +51,10 @@
                     </p>
                     <!--zawartość rozwijana - numer PESEL -->
                     <div class="collapse" id="peselCollapse">
-                        <p th:text="${pesel}"></p>
+                        <p th:text="${patientDTO.pesel}"></p>
                     </div>
                     <p>
-                        <strong>Numer telefonu:</strong> <span th:text="${phone}"></span>
+                        <strong>Numer telefonu:</strong> <span th:text="${patientDTO.phone}"></span>
                     </p>
                     <!-- Przycisk otwierający modal -->
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPatientModal">
