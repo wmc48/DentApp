@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja użytkownika</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav th:replace="~{navbarLoggedMed :: navbar}"></nav>
+
+<div class="container mt-5">
+    <h1 class="text-center">Manage Categories and Services</h1>
+
+    <!-- sekcja kategorie -->
+    <div class="mt-5">
+        <h2>Kategorie usług:</h2>
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Dodaj kategorię</button>
+
+
+        <p>
+            <strong>Kategorie:</strong>
+            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#categoryCollapse" aria-expanded="false" aria-controls="categoryCollapse">
+                Pokaż dostepne kategorie
+            </button>
+        </p>
+        <!-- tabela wyświetlająca istniejące kategorie -->
+        <div class="collapse" id="categoryCollapse">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nazwa</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.serviceCategoryId}"></td>
+                    <td th:text="${category.name}"></td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal"
+                                th:data-id="${category.serviceCategoryId}" th:data-name="${category.name}">
+                            Edytuj
+                        </button>
+                    </td>
+
+                    <td>
+                        <!-- przycisk usuń -->
+                        <form th:action="@{/staffView/priceList/deleteCategory/{categoryId}(categoryId=${category.serviceCategoryId})}"
+                              th:method="DELETE">
+                            <button type="submit" class="btn btn-danger">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal edycji kategorii -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edytuj kategorię</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/staffView/priceList/updateCategory/{categoryId}(categoryId=${category.serviceCategoryId})}"
+                          th:object="${serviceCategoryDTO}"
+                          method="post">
+                        <input type="hidden" name="_method" value="put"/>
+                        <input type="hidden" th:field="*{serviceCategoryId}" id="categoryId">
+                        <div class="form-group">
+                            <label for="categoryName">Nazwa kategorii</label>
+                            <input type="text" class="form-control" th:field="*{name}" id="categoryName" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                            <button type="submit" class="btn btn-primary">Zaktualizuj</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- sekcja service -->
+    <div class="mt-5">
+        <h2>Usługi</h2>
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addServiceModal">Dodaj usługę</button>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Nazwa usługi</th>
+                <th>Opis</th>
+                <th>Cena</th>
+                <th>Kategoria</th>
+                <th>Opcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Teeth Cleaning</td>
+                <td>Professional dental cleaning</td>
+                <td>$50.00</td>
+                <td>General Dentistry</td>
+                <td>
+                    <button class="btn btn-warning btn-sm">Edytuj</button>
+                    <button class="btn btn-danger btn-sm">Usuń</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- dodaj kategorię modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addCategoryForm" action="/staffView/priceList/addCategory" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" name="name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--dodaj usługi modal -->
+<div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addServiceModalLabel">Add Service</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="serviceName" class="form-label">Service Name</label>
+                        <input type="text" class="form-control" id="serviceName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="serviceDescription" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicePrice" class="form-label">Price</label>
+                        <input type="number" class="form-control" id="servicePrice" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceCategory" class="form-label">Category</label>
+                        <select class="form-select" id="serviceCategory" required>
+                            <option selected disabled>Choose a category</option>
+                            <option value="1">General Dentistry</option>
+                            <option value="2">Orthodontics</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal edycji kategorii -->
+<!-- Przycisk do wywołania modalu -->
+
+<script>
+    // Ustawianie danych w formularzu modalu przy kliknięciu "Edytuj"
+    document.addEventListener("DOMContentLoaded", function () {
+        var editButtons = document.querySelectorAll('[data-bs-target="#editCategoryModal"]');
+        editButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                var categoryId = button.getAttribute('data-id');
+                var categoryName = button.getAttribute('data-name');
+
+                // Ustawianie wartości w formularzu
+                document.getElementById('categoryId').value = categoryId;
+                document.getElementById('categoryName').value = categoryName;
+            });
+        });
+    });
+</script>
+
+
+<!--&lt;!&ndash; Modal edycji kategorii &ndash;&gt;-->
+<!--<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="editCategoryModalLabel">Edytuj kategorię</h5>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--            </div>-->
+<!--            <div class="modal-body">-->
+<!--                &lt;!&ndash; formularz edycji kategorii &ndash;&gt;-->
+<!--                <form id="editCategoryForm" method="post" action="/staffView/priceList/updateCategory/{serviceCategoryId}">-->
+<!--                    &lt;!&ndash; ukryte pole do symulacji metody PUT &ndash;&gt;-->
+<!--                    <input type="hidden" name="_method" value="PUT">-->
+<!--                    <input type="hidden" id="editCategoryId" name="serviceCategoryId">-->
+
+<!--                    <div class="mb-3">-->
+<!--                        <label for="editCategoryName" class="form-label">Nazwa kategorii</label>-->
+<!--                        <input type="text" class="form-control" id="editCategoryName" name="name" required>-->
+<!--                    </div>-->
+<!--                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

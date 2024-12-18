@@ -10,6 +10,8 @@
 <body>
 
 <nav th:replace="~{navbarLoggedMed :: navbar}"></nav>
+<div class="container mt-5">
+
 <h1>Panel personelu</h1>
 <p class="fs-5">
     <strong>Witaj lekarz:</strong> <span th:text="${employee.name}"></span>
@@ -25,6 +27,7 @@
         <th>ID</th>
         <th>Pacjent</th>
         <th>Data</th>
+        <th></th>
         <th></th>
     </tr>
     <p th:if="${#lists.isEmpty(reservations)}">Nie masz żadnych zaplanowanych wizyt.</p>
@@ -42,9 +45,17 @@
                 <button type="submit" class="btn btn-danger">Usuń</button>
             </form>
         </td>
+        <td>
+            <!-- przycisk usuń -->
+            <form th:action="@{/reservation/delete/{reservationId}(reservationId=${reservation.reservationId})}"
+                  th:method="DELETE">
+                <button type="submit" class="btn btn-danger">Podejmij</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
+    </div>
 <footer class="bg-light text-center text-muted py-3 mt-5">
     <p>&copy; 2024 DentApp. Wszystkie prawa zastrzeżone.</p>
 </footer>

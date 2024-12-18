@@ -99,3 +99,26 @@ values(3, 'doc1', '$2a$12$YjTlUNUDgV6pQ0mSHrP7aOXyYsh0dI.93r8c5FNFZ1R9c3axp.eau'
 insert into user_role (user_id, role_id) values(1, 1);
 insert into user_role (user_id, role_id) values(2, 4);
 insert into user_role (user_id, role_id) values(3, 3);
+
+CREATE TABLE service (
+    service_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price NUMERIC(10, 2) NOT NULL,
+    notes TEXT,
+    category_id INT,
+    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id)
+);
+
+CREATE TABLE service_employee (
+    service_id INT NOT NULL,
+    employee_id INT NOT NULL,
+    PRIMARY KEY (service_id, employee_id),
+    CONSTRAINT fk_service FOREIGN KEY (service_id) REFERENCES service(service_id),
+    CONSTRAINT fk_employee FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
+);
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT
+);
