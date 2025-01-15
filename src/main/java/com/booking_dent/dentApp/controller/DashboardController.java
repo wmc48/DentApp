@@ -21,4 +21,14 @@ public class DashboardController {
         return dashboardService.showDashboardForRole(model, principal, "patientView/dashboard");
     }
 
+    @GetMapping("/staffView/admin/dashboard")
+    public String showDashboardReservationForAdmin(Model model, Principal principal) {
+        //pobierz nazwę użytkownika aktualnie zalogowanego użytkownika i na jej podstawie znajdź id pacjenta
+        //Long employeeId = employeeService.getEmployeeIdByUsername(principal.getName());
+
+        //model.addAttribute("employee", employeeService.getEmployeeDTObyId(employeeId));
+        model.addAttribute("employee", "włącz to wyżej po testach");
+        return "/staffView/admin/dashboard";
+    }
+
 }

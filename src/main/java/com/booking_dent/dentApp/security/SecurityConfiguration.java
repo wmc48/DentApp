@@ -42,7 +42,7 @@ public class SecurityConfiguration {
         httpSecurity
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/patientView/**").hasAnyAuthority("patient")
-                        .requestMatchers("/staffView/**").hasAnyAuthority("staff", "doctor", "admin")
+                       // .requestMatchers("/staffView/**").hasAnyAuthority("staff", "doctor", "admin")
                         .anyRequest().permitAll() //wszystkie inne strony wymagają uwierzytelnienia
                 )
                 .formLogin(formLogin -> formLogin
@@ -71,11 +71,15 @@ public class SecurityConfiguration {
             //sprawdź role użytkownika
             boolean isPatient = user.getRoles().stream()
                     .anyMatch(role -> role.getRoleName().equalsIgnoreCase("patient"));
+            boolean isAdmin = user.getRoles().stream()
+                    .anyMatch(role -> role.getRoleName().equalsIgnoreCase("admin"));
 
             //w zależności od roli
             if (isPatient) {
                 response.sendRedirect("/patientView/dashboard");
-            } else {
+            } else if(isAdmin){
+                response.sendRedirect("/staffView/admin/dashboard");
+            }else {
                 response.sendRedirect("/staffView/dashboard");
             }
         };

@@ -45,8 +45,11 @@ public class EmployeeService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         //pobierz identyfikator pacjenta na podstawie nazwy użytkownika
+        System.out.println("test " + user.getUsername());
+
         EmployeeEntity employee = employeeRepository.findByUser(user)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+
+                .orElseThrow(() -> new IllegalArgumentException("Patsdgsdgient not found"));
 
         return employee.getEmployeeId();
     }
