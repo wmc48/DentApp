@@ -27,8 +27,6 @@ public class RegistrationController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setUserDTO(new UserDTO()); //ustawianie obiektu userDTO
-        accountDTO.setPatientDTO(new PatientDTO()); //ustawianie obiektu patientDTO
         model.addAttribute("accountDTO", accountDTO);
         return "register";
     }
@@ -49,17 +47,16 @@ public class RegistrationController {
         return "redirect:/index";
     }
 
-    @GetMapping("/staffView/register")
-    public String showRegistrationFormEmployee(Model model) {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setUserDTO(new UserDTO()); //ustawianie obiektu userDTO
-        accountDTO.setEmployeeDTO(new EmployeeDTO()); //ustawianie obiektu patientDTO
-        model.addAttribute("accountDTO", accountDTO);
-        return "/staffView/register";
-    }
 
+    @GetMapping("/staffView/admin/createEmployee")
+    public String showRegistrationFormEmpl(Model model) {
+        //tworzenie pustego obiektu AccountDTO dla Thymeleaf
+        model.addAttribute("accountDTO", new AccountDTO());
+        return "staffView/admin/createEmployee";
+    }
+    //tworzenie konta pracownika przez admina
     @Transactional
-    @PostMapping("/staffView/register/create")
+    @PostMapping("/staffView/admin/createEmployee")
     public String registerUserEmployee(
             @ModelAttribute("registerDTO") AccountDTO registerDTO,
             RedirectAttributes redirectAttributes
@@ -69,10 +66,10 @@ public class RegistrationController {
         //pobiera wartość "1 ADMIN", "3 LEKARZ", "2 PERSONEL"
         int roleId = userDTO.getRoleId();
         UserEntity newUser = userService.createAccount(userDTO, roleId);
-        // Dodanie pracownika powiązanego z użytkownikiem
+        //ddanie pracownika powiązanego z użytkownikiem
         employeeService.addEmployee(employeeDTO, newUser);
 
         redirectAttributes.addFlashAttribute("message", "Rejestracja zakończona sukcesem. Zaloguj się.");
-        return "redirect:/index";
+        return "redirect:/staffView/admin/dashboard";
     }
 }

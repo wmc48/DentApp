@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<nav th:replace="~{navbarLoggedMed :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbarLoggedMed}"></nav>
 <div class="container mt-5">
     <h1>Panel personelu</h1>
     <p class="fs-5">
@@ -20,12 +20,13 @@
 
         <a href="/staffView/employee" class="btn btn-secondary me-2">Pracownicy</a>
         <a href="/staffView/admin/priceList" class="btn btn-success">Cennik</a>
+        <a href="/staffView/admin/createEmployee" class="btn btn-secondary me-2">Dodaj pracownika</a>
     </div>
 </div>
 
 
 <footer class="bg-light text-center text-muted py-3 mt-5">
-    <p>&copy; 2024 DentApp. Wszystkie prawa zastrzeżone.</p>
+    <p>&copy; 2025 DentApp. Wszystkie prawa zastrzeżone.</p>
 </footer>
 
 <!-- Bootstrap JS -->

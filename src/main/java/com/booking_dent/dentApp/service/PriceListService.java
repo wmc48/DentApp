@@ -20,35 +20,26 @@ public class PriceListService {
     private final ServiceCategoryRepository serviceCategoryRepository;
     private final ServiceRepository serviceRepository;
 
-    public ServiceCategoryEntity addServiceCategory(ServiceCategoryDTO serviceCategoryDTO) {
+    //**********************CATEGORY
+
+    public void addServiceCategory(ServiceCategoryDTO serviceCategoryDTO) {
         ServiceCategoryEntity newCategory = ServiceCategoryEntity.builder()
                 .name(serviceCategoryDTO.getName())
                 .build();
-        return serviceCategoryRepository.save(newCategory);
+        serviceCategoryRepository.save(newCategory);
     }
 
-    public ServiceEntity addService(ServiceDTO serviceDTO) {
-        ServiceEntity newService = ServiceEntity.builder()
-                .name(serviceDTO.getName())
-                .description(serviceDTO.getDescription())
-                .price(serviceDTO.getPrice())
-                .category(serviceDTO.getCategoryId())
-                .build();
-        return serviceRepository.save(newService);
+    public void updateCategory(Long categoryId, ServiceCategoryDTO categoryDTO) {
+
+        ServiceCategoryEntity categoryEntity = serviceCategoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("category not found, patientId: " + categoryId));
+
+        categoryEntity.setName(categoryDTO.getName());
+        serviceCategoryRepository.save(categoryEntity);
     }
 
     public void deleteCategoryById(Long id) {
         serviceCategoryRepository.deleteById(id);
-    }
-
-    public ServiceCategoryEntity updateCategory(ServiceCategoryDTO serviceCategoryDTO, Long categoryId) {
-        ServiceCategoryEntity categoryEntity = serviceCategoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee not found, employeeId: " + categoryId));
-
-        categoryEntity.setName(serviceCategoryDTO.getName());
-
-        return serviceCategoryRepository.save(categoryEntity);
-
     }
 
     public List<ServiceCategoryDTO> getAllServiceCategory() {
@@ -62,6 +53,18 @@ public class PriceListService {
                 .collect(Collectors.toList());
     }
 
+    //***************** SERVICE
+
+    public void addService(ServiceDTO serviceDTO) {
+        ServiceEntity newService = ServiceEntity.builder()
+                .name(serviceDTO.getName())
+                .description(serviceDTO.getDescription())
+                .price(serviceDTO.getPrice())
+                .category(serviceDTO.getCategoryId())
+                .build();
+        serviceRepository.save(newService);
+    }
+
     public List<ServiceDTO> getAllService() {
         return serviceRepository.findAll().stream()
                 .map(service -> {
@@ -72,10 +75,18 @@ public class PriceListService {
                     dto.setPrice(service.getPrice());
                     dto.setCategoryId(service.getCategory());
 
-
                     return dto;
                 })
                 .collect(Collectors.toList());
     }
 
+    public void updateService(Long serviceId, ServiceDTO serviceDTO) {
+        ServiceEntity serviceEntity = serviceRepository.findById(serviceId)
+                .orElseThrow(() -> new EntityNotFoundException("service not found, patientId: " + serviceId));
+
+        serviceEntity.setName(serviceDTO.getName());
+        serviceEntity.setDescription(serviceDTO.getDescription());
+        serviceEntity.setPrice(serviceDTO.getPrice());
+        serviceRepository.save(serviceEntity);
+    }
 }

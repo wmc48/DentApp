@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<nav th:replace="~{navbarLoggedMed :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbarLoggedMed}"></nav>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -18,7 +18,7 @@
                     <h4>Formularz Rejestracji</h4>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/staffView/register/create}" method="POST" th:object="${accountDTO}">
+                    <form th:action="@{/staffView/admin/createEmployee}" method="POST" th:object="${accountDTO}">
                         <!-- username -->
                         <div class="mb-3">
                             <label class="form-label">Rola</label>

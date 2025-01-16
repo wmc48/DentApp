@@ -7,7 +7,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav th:replace="~{navbarLogged :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbarLogged}"></nav>
 <div class="container">
     <h2>Dostępne terminy dla lekarza <span th:text="${employee.name} + ' ' + ${employee.surname}"></span></h2>
     <h2>pacjent id <span th:text="${patientId}"></span></h2>

@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<nav th:replace="~{navbarLoggedMed :: navbar}"></nav>
+<nav th:replace="~{fragments/navbar :: navbarLoggedMed}"></nav>
 
 <div class="container mt-5">
     <h1 class="text-center">Manage Categories and Services</h1>
@@ -39,8 +39,9 @@
                     <td th:text="${category.serviceCategoryId}"></td>
                     <td th:text="${category.name}"></td>
                     <td>
-                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal"
-                                th:data-id="${category.serviceCategoryId}" th:data-name="${category.name}">
+                        <button class="btn btn-primary btn-sm"
+                                data-bs-toggle="modal"
+                                th:attr="data-bs-target='#editCategoryModal' + ${category.serviceCategoryId}">
                             Edytuj
                         </button>
                     </td>
@@ -82,8 +83,12 @@
                 <td th:text="${service.price}"></td>
                 <td th:text="${service.categoryId.name}"></td>
                 <td>
-                    <button class="btn btn-warning btn-sm" th:data-id="${servicId}">Edytuj</button>
-                    <button class="btn btn-danger btn-sm" th:data-id="${servicId}">Usuń</button>
+                    <button class="btn btn-primary btn-sm"
+                            data-bs-toggle="modal"
+                            th:attr="data-bs-target='#editServiceModal' + ${service.serviceId}">
+                        Edytuj
+                    </button>
+                    <button class="btn btn-danger btn-sm" th:data-id="${serviceId}">Usuń</button>
                 </td>
             </tr>
             </tbody>
@@ -109,6 +114,38 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+<!--modal do edycji kategorii-->
+<div th:each="category : ${categories}"
+     th:id="'editCategoryModal' + ${category.serviceCategoryId}"
+     class="modal fade"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj kategorię</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/staffView/admin/priceList/editCategory/{categoryId}(categoryId=${category.serviceCategoryId})}"
+                  method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="categoryNameEd" class="form-label">Nazwa kategorii</label>
+                        <input type="text"
+                               class="form-control"
+                               id="categoryNameEd"
+                               name="name"
+                               th:value="${category.name}"
+                               required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -149,6 +186,59 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<!--modal do edycji usług-->
+<div th:each="service : ${services}"
+     th:id="'editServiceModal' + ${service.serviceId}"
+     class="modal fade"
+     tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edytuj kategorię</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form th:action="@{/staffView/admin/priceList/editService/{serviceId}(serviceId=${service.serviceId})}"
+                  method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="serviceNamee" class="form-label">Nazwa usługi</label>
+                        <input type="text"
+                               class="form-control"
+                               id="serviceNamee"
+                               name="name"
+                               th:value="${service.name}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="serviceDescriptionEdit" class="form-label">Opis usługi</label>
+                        <input type="text"
+                               class="form-control"
+                               id="serviceDescriptionEdit"
+                               name="description"
+                               th:value="${service.description}"
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="servicePriceEdit" class="form-label">Cena</label>
+                        <input type="text"
+                               class="form-control"
+                               id="servicePriceEdit"
+                               name="price"
+                               th:value="${service.price}"
+                               required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
